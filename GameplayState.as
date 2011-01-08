@@ -23,6 +23,8 @@ package
 			
 			_ship = new Ship();
 			add(_ship);
+			add(_ship.Hook1);
+			add(_ship.Hook2);
 			
 			_asteroids = new FlxGroup();
 			add(_asteroids);

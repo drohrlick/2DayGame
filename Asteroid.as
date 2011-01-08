@@ -6,6 +6,8 @@ package
 	{
 		static public var group:FlxGroup;
 		[Embed(source = "asteroid.png")] private var Img:Class;	
+		
+		public var Hooked:Boolean = false;
 
 		public function Asteroid(x:int = 0, y:int = 0) 
 		{
