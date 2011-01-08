@@ -4,7 +4,7 @@ package
 	
 	public class Ship extends FlxSprite
 	{
-		[Embed(source = "ship.png")] private var Img:Class;	//Graphic of the player's ship		
+		[Embed(source = "sprites/shipA.png")] private var Img:Class;	//Graphic of the player's ship		
 		
 		public var Hook1_index:int;
 		public var Hook2_index:int;

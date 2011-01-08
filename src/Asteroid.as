@@ -5,7 +5,7 @@ package
 	public class Asteroid extends FlxSprite
 	{
 		static public var group:FlxGroup;
-		[Embed(source = "asteroid.png")] private var Img:Class;	
+		[Embed(source = "sprites/asteroid.png")] private var Img:Class;	
 		
 		public var Hooked:Boolean = false;
 
