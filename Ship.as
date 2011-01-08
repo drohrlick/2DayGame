@@ -64,7 +64,8 @@ package
 				Hook2.x = x -5;
 				Hook2.y = y;
 				Hook2.angle = angle;
-			}
+			}			
+			Hook1.Line.drawLine(x, y, Hook1.x, Hook1.y, 0x00000000, 1);
 			
 			super.update();
 		}

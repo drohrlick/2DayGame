@@ -23,9 +23,13 @@ package
 			
 			_ship = new Ship();
 			add(_ship);
+
 			add(_ship.Hook1);
 			add(_ship.Hook2);
 			
+			add(_ship.Hook1.Line);
+			add(_ship.Hook2.Line);
+						
 			_asteroids = new FlxGroup();
 			add(_asteroids);
 			Asteroid.group = _asteroids;
@@ -42,12 +46,12 @@ package
 		override public function update():void
 		{		
 			_ship.myUpdate();
-			//for each(var asteroid:Asteroid in _asteroids)
-			//	asteroid.myUpdate();
-			
+
 			for (var i:int = 0; i < _asteroids.members.length; i++)
 				_asteroids.members[i].myUpdate();
 			
+				
+				
 			//_frameCounter++;
 			//_frameCounterTxt.text = _frameCounter.toString();
 		}
