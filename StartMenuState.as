@@ -6,12 +6,26 @@ package
 	{
 		override public function create():void
 		{
-			add(new FlxText(0, 0, 100, "StartMenu for Loveroids")); //adds a 100px wide text field at position 0,0 (upper left)
-		}
+			//A couple of simple text fields
+			var t:FlxText;
+			t = new FlxText(0,FlxG.height/2-10,FlxG.width,"Loveroids");
+			t.size = 16;
+			t.alignment = "center";
+			add(t);
+			t = new FlxText(0,FlxG.height-20,FlxG.width,"click to play");
+			t.alignment = "center";
+			add(t);
+			
+			FlxState.bgColor = 0xff783629;
+			
+			FlxG.mouse.show();		}
 		
 		//The main game loop function
 		override public function update():void
 		{
+			//Switch to play state if the mouse is pressed
+			if(FlxG.mouse.justPressed())
+				FlxG.state = new GameplayState();
 		}
 	}
 }

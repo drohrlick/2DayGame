@@ -5,10 +5,13 @@ package
 	public class GameplayState extends FlxState
 	{
 		protected var _frameCounterTxt:FlxText;
-		private var _frameCounter:int;
-		private var _ship:Ship;
+		protected var _frameCounter:int;
+		protected var _ship:Ship;
+		protected var _asteroids:FlxGroup;
 		override public function create():void
 		{
+			var i:int;
+			
 			add(new FlxText(0, 0, 100, "Loveroids")); //adds a 100px wide text field at position 0,0 (upper left)
 
 			_frameCounterTxt = new FlxText(0, 0, FlxG.width);
@@ -20,15 +23,31 @@ package
 			
 			_ship = new Ship();
 			add(_ship);
+			
+			_asteroids = new FlxGroup();
+			add(_asteroids);
+			Asteroid.group = _asteroids;
+			
+			for (i = 0; i < 32; i++)
+			{
+				_asteroids.add(new Asteroid(FlxU.random() * Loveroids.resX, FlxU.random() * Loveroids.resY))			
+			}
+			
+			FlxState.bgColor = 0x8800FF00;
 		}
 		
 		//The main game loop function
 		override public function update():void
 		{		
 			_ship.myUpdate();
+			//for each(var asteroid:Asteroid in _asteroids)
+			//	asteroid.myUpdate();
 			
-			_frameCounter++;
-			_frameCounterTxt.text = _frameCounter.toString();
+			for (var i:int = 0; i < _asteroids.members.length; i++)
+				_asteroids.members[i].myUpdate();
+			
+			//_frameCounter++;
+			//_frameCounterTxt.text = _frameCounter.toString();
 		}
 	}
 }

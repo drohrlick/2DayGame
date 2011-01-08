@@ -4,28 +4,39 @@ package
 	
 	public class Ship extends FlxSprite
 	{
-		[Embed(source = "ship2.png")] private var ImgShip:Class;	//Graphic of the player's ship		
+		[Embed(source = "ship.png")] private var Img:Class;	//Graphic of the player's ship		
 		
 		public function Ship() 
 		{
 			maxThrust = 100;
-			super(FlxG.width / 2 - 8, FlxG.height / 2 - 8, ImgShip);
+			drag = new FlxPoint(0,0);
+			
+			super(FlxG.width / 2 - 8, FlxG.height / 2 - 8, Img);
 		}
 		
+//		public override function pdate():void
 		public function myUpdate():void
-		{
-			super.update();
+		{	
+			//trace("update");
 			
+			thrust = 0;
 			if (FlxG.keys.W)
-				angularVelocity -= 60;
-			if (FlxG.keys.A)
-				angularVelocity += 60;
+				thrust -= 100;
 			if (FlxG.keys.S)
-				thrust += maxThrust*2;
+				thrust += 100;
+				
+			angularVelocity = 0;
+			if (FlxG.keys.A)
+				angularVelocity -= 200;
 			if (FlxG.keys.D)
-				thrust += maxThrust * -2;
+				angularVelocity += 200;
 			
-
+			if (FlxG.mouse.justPressed())
+			{
+			
+			}
+			
+			super.update();
 		}
 	}
 
