@@ -57,7 +57,7 @@ package
 		
 		override public function update():void
 		{
-			_world.Step(FlxG.elapsed, 10, 10);
+			//_world.Step(FlxG.elapsed, 10, 10);
 			super.update();
 		}
 	}

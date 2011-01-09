@@ -32,7 +32,7 @@ package
         public var _type:uint = b2Body.b2_dynamicBody;
  
 		private var _maxRotVelocity:int = 5;
-		private var _maxThrust:Number = 0.5;
+		private var _maxThrust:Number = 0.2;
 		private var _thrust:b2Vec2;
 		private var _rotation:int;
  
@@ -49,7 +49,7 @@ package
 			
 			_hook1 = new Box2DHook(0, 0, 8, 2, _world);
 			_hook1.createBody();
-			_hook1.loadGraphic(_hook1.Img, false, false, 8, 2);
+			_hook1.loadGraphic(_hook1.ImgHook, false, false, 8, 2);
 		}
  
 		        public function createBody():void
@@ -143,9 +143,9 @@ package
 			frame = (angle + 22.5) / 45;
 						
 			//update hook
-			UpdateHook();
+			//UpdateHook();
             
-			super.update();
+			//super.update();
         }
 		
 		private function UpdateHook():void
