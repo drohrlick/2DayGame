@@ -487,6 +487,38 @@ public class b2Body
 		m_angularVelocity += m_invI * ((point.x - m_sweep.c.x) * impulse.y - (point.y - m_sweep.c.y) * impulse.x);
 	}
 	
+		/**
+	 * Mine function to reduce linear velocity of the ship object.
+	 */
+	public function ApplyFrictionToVelocity(friction:Number) : void
+	{
+		if (m_linearVelocity.x < 0)
+		{
+			m_linearVelocity.x += friction;
+			if (m_linearVelocity.x > 0)
+				m_linearVelocity.x = 0;
+		}
+		if (m_linearVelocity.x > 0) 
+		{
+			m_linearVelocity.x -= friction;
+			if (m_linearVelocity.x < 0)
+				m_linearVelocity.x = 0;		
+		}
+		
+		if (m_linearVelocity.y < 0)
+		{
+			m_linearVelocity.y += friction;
+			if (m_linearVelocity.y > 0)
+				m_linearVelocity.y = 0;
+		}
+		if (m_linearVelocity.y > 0)
+		{
+			m_linearVelocity.y -= friction;
+			if (m_linearVelocity.y < 0)
+				m_linearVelocity.y = 0;		
+		}
+	}
+	
 	/**
 	 * Splits a body into two, preserving dynamic properties
 	 * @param	callback Called once per fixture, return true to move this fixture to the new body

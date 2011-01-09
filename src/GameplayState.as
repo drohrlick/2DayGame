@@ -108,8 +108,6 @@ package
 			_ship.loadGraphic(_ship.Img, false, false,32,32);
 			add(_ship);
 			add(_ship._hook1);
-			
-
 		}
 		
 				//The main game loop function
@@ -119,7 +117,7 @@ package
 			
 			_world.Step(FlxG.elapsed, 10, 10);
 			super.update();	
-						
+									
 			//_frameCounter++;
 			//_frameCounterTxt.text = _frameCounter.toString();
 		}
