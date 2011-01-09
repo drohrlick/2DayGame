@@ -107,10 +107,10 @@ package
 			
 			if (_obj.GetUserData() == GameplayState.Contact_person_kill)
 			{
-				flicker(0);
+				kill();
 				play( "normal" );
 			}
-
+			
 			x = (_obj.GetPosition().x * ratio) - width/2 ;
 			y = (_obj.GetPosition().y * ratio) - height/2;
 			angle = _obj.GetAngle() * (180 / Math.PI);
@@ -120,7 +120,10 @@ package
 		
 		override public function kill():void
 		{
-		
+			FlxG.play(GameplayState.SndHookup);
+			this.visible = false;
+			this.destroy();
+			super.kill();
 		}
     }
 }
