@@ -22,7 +22,7 @@ package
 		
 		protected var _line:Line;
 		
-		private var _numAsteroids:int = 0;
+		private var _numAsteroids:int = 20;
 		private var _backgroundColor:Number = 0xDDDDDDDD;
 		
 		override public function create():void
