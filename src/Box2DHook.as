@@ -10,7 +10,6 @@ package
     public class Box2DHook extends FlxSprite
     {
 		[Embed(source = "sprites/hook.png")] public var ImgHook:Class;
-		//[Embed(source = "sprites/
 
         private var ratio:Number = 30;
  
@@ -39,7 +38,7 @@ package
 		private var _shotTimer:Number;
 		private var _shotTimeLimit:Number = 1;
 
-		public var AttactchedToShip:Boolean = true;
+		public var AttachedToShip:Boolean = true;
 		
 		// chain variables
 		private var _maxNumLinks:uint = 50;
@@ -80,7 +79,7 @@ package
  
         override public function update():void
         {
-			if (AttactchedToShip)
+			if (AttachedToShip)
 			{
 				x = (_posX * ratio) - width/2 ;
 				y = (_posY * ratio) - height/2;
@@ -93,7 +92,7 @@ package
 				
 				_shotTimer -= FlxG.elapsed;
 				if (_shotTimer < 0)
-					AttactchedToShip = true;
+					AttachedToShip = true;
 
 			}
 
@@ -110,7 +109,7 @@ package
  
 		public function Shoot(x:int, y:int):void
 		{
-			if (AttactchedToShip)
+			if (AttachedToShip)
 			{					
 				_obj.SetPosition(new b2Vec2(_posX, _posY));
 								
@@ -128,7 +127,7 @@ package
 				_obj.ApplyImpulse(_thrust, _obj.GetPosition());	
 							
 				_shotTimer = _shotTimeLimit;	
-				AttactchedToShip = false;
+				AttachedToShip = false;
 			}
 		}
     }

@@ -61,10 +61,10 @@ package
 			_wallLeft.createBody();
 			_wallRight.createBody();
 			
-			add(_ceiling);
-			add(_floor);
-			add(_wallLeft);
-			add(_wallRight);
+			//add(_ceiling);
+			//add(_floor);
+			//add(_wallLeft);
+			//add(_wallRight);
 		}
 		
 		private function CreateText():void
@@ -105,9 +105,11 @@ package
 			
 			_ship = new Box2DShip(Loveroids.resX / 2 - 16, Loveroids.resY / 2 - 16, 32, 32, _world);
 			_ship.createBody();
-			_ship.loadGraphic(_ship.Img, false, false,32,32);
+			_ship.loadGraphic(_ship.Img, false, false, 32, 32);
+			add(_ship._chain1);
 			add(_ship);
 			add(_ship._hook1);
+			
 		}
 		
 				//The main game loop function
