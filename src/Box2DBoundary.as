@@ -26,15 +26,17 @@ package
 		public var _angle:Number = 0;
 		//Default body type
 		public var _type:uint = b2Body.b2_staticBody;
-		
-		public function Box2DBoundary(X:Number, Y:Number, Width:Number, Height:Number, w:b2World):void
+				
+		public function Box2DBoundary(id:int, X:Number, Y:Number, Width:Number, Height:Number, w:b2World):void
 		{
 			super(X, Y, Width, Height);
 			
 			_world = w;
+			
+			createBody(id);
 		}
 		
-		public function createBody():void
+		public function createBody(id:int):void
 		{
 			var boxShape:b2PolygonShape = new b2PolygonShape();
 			boxShape.SetAsBox((width / 2) / ratio, (height / 2) / ratio );
@@ -51,6 +53,7 @@ package
 			_bodyDef.position.Set((x + (width / 2)) / ratio, (y + (height / 2)) / ratio);
 			_bodyDef.angle = _angle * (Math.PI / 180);
 			_bodyDef.type = _type;
+			
 			_obj = _world.CreateBody(_bodyDef);
 			_obj.CreateFixture(_fixDef);
 			_obj.SetUserData(GameplayState.Contact_boundary);

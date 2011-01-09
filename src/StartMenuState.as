@@ -43,7 +43,8 @@ package
 			_array_people = new Array()
 			for (i = 0; i < _numPeople; i++)
 			{
-				_array_people[i] = new Box2DPeople( FlxU.random() * Loveroids.resX, 
+				_array_people[i] = new Box2DPeople( i,
+													FlxU.random() * Loveroids.resX, 
 													(FlxU.random() * Loveroids.resY) - 300, 8, 8, _world);
 				add(_array_people[i]);
 			}

@@ -16,8 +16,15 @@ package
         public var _fixDef:b2FixtureDef;
         public var _bodyDef:b2BodyDef
         public var _obj:b2Body;
+		
 		public var _hook1:Box2DHook;
 		public var _chain1:Box2DChain;
+		
+		//public var _hook2:Box2DHook;
+		//public var _chain2:Box2DChain;
+		
+		public var _personHolder1:b2Vec2;
+		public var _personHolder2:b2Vec2;
  
         private var _world:b2World;
  
@@ -31,13 +38,13 @@ package
         public var _angle:Number = 0;
         //Default body type
         public var _type:uint = b2Body.b2_dynamicBody;
- 
+		 
 		private var _maxRotVelocity:int = 5;
 		private var _maxThrust:Number = 0.5;
 		private var _thrust:b2Vec2;
 		private var _rotation:int;
  
-        public function Box2DShip(X:Number, Y:Number, Width:Number, Height:Number, w:b2World):void
+        public function Box2DShip(id:int, X:Number, Y:Number, Width:Number, Height:Number, w:b2World):void
         {
             super(X, Y);
 
@@ -48,15 +55,19 @@ package
 			_thrust = new b2Vec2(0, 0);
 			_rotation = 0;
 			
-			_hook1 = new Box2DHook(0, 0, 8, 2, _world);
-			_hook1.createBody();
+			createBody(id);
+			
+			_hook1 = new Box2DHook(0, 0, 0, 8, 2, _world);
 			_hook1.loadGraphic(_hook1.ImgHook, false, false, 8, 2);
 			
-			_chain1 = new Box2DChain( _world );
+			//_hook2 = new Box2DHook(0, 0, 0, 8, 2, _world);
+			//_hook2.loadGraphic(_hook2.ImgHook, false, false, 8, 2);
 			
+			_chain1 = new Box2DChain( _world );
+			//_chain2 = new Box2DChain( _world );
 		}
  
-		        public function createBody():void
+		public function createBody(id:int):void
         {            
             var boxShape:b2PolygonShape = new b2PolygonShape();
             boxShape.SetAsBox((width/2) / ratio, (height/2) /ratio);
@@ -91,16 +102,9 @@ package
 			//handle rotations from input
 			HandleRotations();
 						
-			//update hook
-			UpdateHook();
-			
-			if (!_hook1.AttachedToShip) 
-			{
-				_chain1.SetPositions( new b2Vec2(x + 16, y + 16), new b2Vec2(_hook1.x, _hook1.y) );
-				//_chain1.UpdateLinks();
-				_chain1.SetVisible();
-			}
-			else _chain1.SetInvisible();
+			//update hook & chains
+			UpdateHooks();
+			UpdateChains();
             
 			super.update();
         }
@@ -161,17 +165,40 @@ package
 			//super.update();
         }
 		
-		private function UpdateHook():void
+		private function UpdateHooks():void
 		{	
 			if (_hook1.AttachedToShip)
-			{	
-				var _pos:b2Vec2 = _obj.GetPosition();
-				_angle = _obj.GetAngle();
-				_hook1.UpdateAttachedHook(_pos, _angle);
-			}
+				_hook1.UpdateAttachedHook(_obj.GetPosition(), _obj.GetAngle());
+			//if (_hook2.AttachedToShip)
+				//_hook2.UpdateAttachedHook(_obj.GetPosition(), _obj.GetAngle());
 			
 			if (FlxG.mouse.justPressed())
-				_hook1.Shoot(x + 16, y + 16);
+			{
+				//if hook1 is free, fire it. otherwise, shoot hook2
+				//if(_hook1._obj.GetUserData() == GameplayState.Contact_hook_free)
+					_hook1.Shoot(x + 16, y + 16);
+				//else
+				//	_hook2.Shoot(x + 16, y + 16);
+			}
+		}
+		
+		private function UpdateChains():void
+		{
+			if (!_hook1.AttachedToShip) 
+			{
+				_chain1.SetPositions( new b2Vec2(x + 16, y + 16), new b2Vec2(_hook1.x, _hook1.y) );
+				//_chain1.UpdateLinks();
+				_chain1.SetVisible();
+			}
+			else _chain1.SetInvisible();
+			
+			//if (!_hook2.AttachedToShip) 
+			//{
+				//_chain2.SetPositions( new b2Vec2(x + 16, y + 16), new b2Vec2(_hook1.x, _hook1.y) );
+				//_chain1.UpdateLinks();
+				//_chain2.SetVisible();
+			//}
+			//else _chain2.SetInvisible();
 		}
     }
 }

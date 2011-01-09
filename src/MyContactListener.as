@@ -22,6 +22,8 @@ package {
 				//fixtureA.GetBody().SetUserData("remove");
 			//}
 		//}
+		private var reverseImpulse:b2Vec2;
+		private var impulseScale:Number = 0.05;
 		
 		override public function PreSolve(contact:b2Contact, oldManifold:b2Manifold):void 
 		{
@@ -29,22 +31,35 @@ package {
 			var fixtureA:b2Fixture=contact.GetFixtureA();
 			var fixtureB:b2Fixture=contact.GetFixtureB();
 			// variable to handle bodies y position
-			var person_position:b2Vec2;
+			//var person_position:b2Vec2;
 			
 			if ((fixtureA.GetBody().GetUserData() == GameplayState.Contact_person_free && fixtureB.GetBody().GetUserData() == GameplayState.Contact_hook_free) ||
-				(fixtureA.GetBody().GetUserData() == GameplayState.Contact_hook_free && fixtureB.GetBody().GetUserData() == GameplayState.Contact_person_free))
+				(fixtureA.GetBody().GetUserData()== GameplayState.Contact_hook_free && fixtureB.GetBody().GetUserData() == GameplayState.Contact_person_free))
 				{
 					switch(fixtureA.GetBody().GetUserData())
 					{
 						case GameplayState.Contact_person_free:
-							person_position = fixtureA.GetBody().GetPosition();
+							//person_position = fixtureA.GetBody().GetPosition();
+							
 							fixtureA.GetBody().SetUserData(GameplayState.Contact_person_stick);
 							fixtureB.GetBody().SetUserData(GameplayState.Contact_hook_stick);
+							
+							reverseImpulse = fixtureB.GetBody().GetLinearVelocity().GetNegative();
+							reverseImpulse.x *= impulseScale;
+							reverseImpulse.y *= impulseScale;
+							fixtureA.GetBody().ApplyImpulse( reverseImpulse, fixtureA.GetBody().GetPosition());
 							break;
 						case GameplayState.Contact_hook_free:
-							person_position = fixtureB.GetBody().GetPosition();
+							//person_position = fixtureB.GetBody().GetPosition();
+						
 							fixtureA.GetBody().SetUserData(GameplayState.Contact_hook_stick);
 							fixtureB.GetBody().SetUserData(GameplayState.Contact_person_stick);
+							
+							reverseImpulse = fixtureA.GetBody().GetLinearVelocity().GetNegative();
+							reverseImpulse.x *= impulseScale;
+							reverseImpulse.y *= impulseScale;
+							fixtureB.GetBody().ApplyImpulse( reverseImpulse, fixtureB.GetBody().GetPosition());
+
 							break;
 					}
 				}

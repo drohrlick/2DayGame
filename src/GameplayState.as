@@ -68,15 +68,10 @@ package
 			_world.SetContactListener(_contactListener);
 			
 			// create the bounding walls
-			_ceiling = new Box2DBoundary( -30, -30, FlxG.width + 60, 30, _world ); 
-			_floor = new Box2DBoundary( -30, FlxG.height, FlxG.width + 60, 30, _world );
-			_wallLeft = new Box2DBoundary( -30, 0, 30, FlxG.height, _world );
-			_wallRight = new Box2DBoundary( FlxG.width, 0, 30, FlxG.height, _world );
-			
-			_ceiling.createBody();
-			_floor.createBody();
-			_wallLeft.createBody();
-			_wallRight.createBody();
+			_ceiling = new Box2DBoundary(0, -30, -30, FlxG.width + 60, 30, _world ); 
+			_floor = new Box2DBoundary(0, -30, FlxG.height, FlxG.width + 60, 30, _world );
+			_wallLeft = new Box2DBoundary(0, -30, 0, 30, FlxG.height, _world );
+			_wallRight = new Box2DBoundary(0, FlxG.width, 0, 30, FlxG.height, _world );
 			
 			//add(_ceiling);
 			//add(_floor);
@@ -116,17 +111,17 @@ package
 			_array_people = new Array()
 			for (i = 0; i < _numPeople; i++)
 			{
-				_array_people[i] = new Box2DPeople( FlxU.random() * Loveroids.resX, FlxU.random() * Loveroids.resY, 8, 8, _world);
+				_array_people[i] = new Box2DPeople( i, FlxU.random() * Loveroids.resX, FlxU.random() * Loveroids.resY, 8, 8, _world);
 				add(_array_people[i]);
 			}
 			
-			_ship = new Box2DShip(Loveroids.resX / 2 - 16, Loveroids.resY / 2 - 16, 32, 32, _world);
-			_ship.createBody();
+			_ship = new Box2DShip(0, Loveroids.resX / 2 - 16, Loveroids.resY / 2 - 16, 32, 32, _world);
 			_ship.loadGraphic(_ship.Img, false, false, 32, 32);
 			add(_ship._chain1);
+			//add(_ship._chain2);
 			add(_ship);
 			add(_ship._hook1);
-			
+			//add(_ship._hook2);
 		}
 		
 				//The main game loop function
@@ -137,12 +132,20 @@ package
 			_world.Step(FlxG.elapsed, 10, 10);
 			//_world.ClearForces();
 			// scanning through all bodies
-			for (var worldbody:b2Body = _world.GetBodyList(); worldbody; worldbody = worldbody.GetNext()) {
-				// if a body is marked as "remove"...
-				if (worldbody.GetUserData()=="Stick") {
-					// ... just remove it!!
-					//_world.DestroyBody(worldbody);
-					worldbody.SetPositionAndAngle(_ship._hook1._obj.GetPosition(), _ship._hook1._obj.GetAngle());
+			for (var worldbody:b2Body = _world.GetBodyList(); worldbody; worldbody = worldbody.GetNext()) 
+			{
+				if (worldbody.GetUserData() != null)
+				{
+					if (worldbody.GetUserData()== GameplayState.Contact_person_stick) 
+					{
+						// ... just remove it!!
+						//_world.DestroyBody(worldbody);
+					
+						//make body fly back toward ship pos.
+						//_ship._personHolder1 = worldbody.GetPosition();
+						//var offset:b2Vec2 = _ship._obj.GetPosition() - worldbody.GetPosition();
+						//worldbody.SetPosition(_ship._obj.GetPosition());
+					}
 				}
 			}
 			

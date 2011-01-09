@@ -39,14 +39,14 @@ package
 		private var _maxHookThurst:Number = 0.1;
 		private var _shotTimer:Number;
 		private var _shotTimeLimit:Number = 1;
-
+		
 		public var AttachedToShip:Boolean = true;
 		
 		// chain variables
 		private var _maxNumLinks:uint = 50;
 		private var _arrayChain:Array;
  
-        public function Box2DHook(X:Number, Y:Number, Width:Number, Height:Number, w:b2World):void
+        public function Box2DHook(id:int, X:Number, Y:Number, Width:Number, Height:Number, w:b2World):void
         {
             super(X, Y);
 						
@@ -54,10 +54,11 @@ package
             height = Height;
             _world = w
 			
+			createBody(id);
 			_thrust = new b2Vec2(0, 0);
 		}
 		
-		public function createBody():void
+		public function createBody(id:int):void
         {            
             var boxShape:b2PolygonShape = new b2PolygonShape();
             boxShape.SetAsBox((width/2) / ratio, (height/2) /ratio);
@@ -74,7 +75,7 @@ package
             _bodyDef.position.Set((x + (width/2)) / ratio, (y + (height/2)) / ratio);
             _bodyDef.angle = _angle * (Math.PI / 180);
             _bodyDef.type = _type;
- 
+			
             _obj = _world.CreateBody(_bodyDef);
             _obj.CreateFixture(_fixDef);
 			_obj.SetUserData(GameplayState.Contact_hook_free);
@@ -94,9 +95,9 @@ package
 								
 				
 				_shotTimer -= FlxG.elapsed;
-				if (_shotTimer < 0)
+				if (_shotTimer < 0 || _obj.GetUserData() == GameplayState.Contact_hook_stick)
 				{
-					//reset hook
+					//reset hook runs out of time or hits something
 					AttachedToShip = true;
 					_obj.SetUserData(GameplayState.Contact_hook_free);
 				}

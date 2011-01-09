@@ -104,7 +104,7 @@ package
 			var runIncrement:Number = distIncrement * run;
 			var riseIncrement:Number = distIncrement * rise;
 			distIncrement = 10;
-			trace(distIncrement);
+			//trace(distIncrement);
 			
 			var i:int = 0;
 			for ( i = 0; i < _maxNumLinks; i++ )
