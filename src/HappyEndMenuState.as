@@ -52,9 +52,14 @@ package
 				if (FlxG.mouse.justPressed())
 				{
 					FlxG.play(SndMenuIn);
-					FlxG.state = new StartMenuState();
+					FlxG.fade.start(0xff000000, 1, SceneTransition);
 				}
 			}
+		}
+		
+		private function SceneTransition():void
+		{
+			FlxG.state = new StartMenuState();
 		}
 	}
 }

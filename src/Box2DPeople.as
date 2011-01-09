@@ -39,8 +39,10 @@ package
             width = Width;
             height = Height;
             _world = w
-			
-			createBody(id);
+		}
+ 
+        public function createBodyGameplay(id:int):void
+        {            
 			if (FlxU.random() < 0.5 )
 			{
 				loadGraphic(ImgM, false, false, 16, 16 );
@@ -54,10 +56,7 @@ package
 				
 			addAnimation( "normal", [0], 0 );
 			addAnimation( "lovely", [0, 1, 2, 3, 4], 5);
-		}
- 
-        public function createBody(id:int):void
-        {            
+			
             var boxShape:b2PolygonShape = new b2PolygonShape();
             boxShape.SetAsBox((width/2) / ratio, (height/2) /ratio);
  
@@ -72,8 +71,8 @@ package
             _bodyDef = new b2BodyDef();
             _bodyDef.position.Set((x + (width/2)) / ratio, (y + (height/2)) / ratio);
             _bodyDef.angle = _angle * (Math.PI / 180);
-            _bodyDef.type = _type
-			 
+            _bodyDef.type = _type;
+ 
             _obj = _world.CreateBody(_bodyDef);
             _obj.CreateFixture(_fixDef);
 			_obj.SetAngle(FlxU.random() * 360);
@@ -96,18 +95,77 @@ package
 			_obj.SetLinearVelocity(new b2Vec2(randX, randY));
         }
 		
-		override public function update():void
-        {
+		public function createBodyTutorial(id:int):void
+        {            
+			if (FlxU.random() < 0.5 )
+			{
+				loadGraphic(ImgM, false, false, 16, 16 );
+				this.color = 0x0099FF;
+			}
+			else
+			{
+				loadGraphic(ImgW, false, false, 16, 16 );
+				this.color = 0xFFCCFF;
+			}
+				
+			addAnimation( "normal", [0], 0 );
+			addAnimation( "lovely", [0, 1, 2, 3, 4], 5);
+			
+            var boxShape:b2PolygonShape = new b2PolygonShape();
+            boxShape.SetAsBox((width/2) / ratio, (height/2) /ratio);
+ 
+            _fixDef = new b2FixtureDef();
+            _fixDef.density = _density;
+            _fixDef.restitution = _restitution;
+            _fixDef.friction = _friction;                        
+            _fixDef.shape = boxShape;
+			_fixDef.filter.categoryBits = GameplayState.PersonMask;
+			_fixDef.filter.maskBits = GameplayState.HookMask | GameplayState.ShipMask | GameplayState.PersonMask | GameplayState.WallMask;
+			
+            _bodyDef = new b2BodyDef();
+            _bodyDef.position.Set((x + (width/2)) / ratio, (y + (height/2)) / ratio);
+            _bodyDef.angle = _angle * (Math.PI / 180);
+            _bodyDef.type = _type;
+ 
+            _obj = _world.CreateBody(_bodyDef);
+            _obj.CreateFixture(_fixDef);
+			_obj.SetAngle(0);
+			_obj.SetAngularVelocity(0);
+			_obj.SetUserData(GameplayState.Contact_person_free);
+				
+			_obj.SetLinearVelocity(new b2Vec2(0, 0));
+        }
+		
+		public function updateTutorial():void
+		{
 			if (_obj.GetUserData() == GameplayState.Contact_person_stick)
 			{
-				flicker(20);
+				flicker(30);
 				_obj.SetUserData(GameplayState.Contact_person_flash);
 				play( "lovely" );
 			}	
 			if (_obj.GetUserData() == GameplayState.Contact_person_flash && !flickering())
 			{
-				//ran out of time. die of old age
-				_obj.SetUserData(GameplayState.Contact_person_oldAge);
+				//reset person
+				_obj.SetUserData(GameplayState.Contact_person_free);
+				play( "normal" );
+			}
+			
+			super.update();
+		}
+		
+		override public function update():void
+        {
+			if (_obj.GetUserData() == GameplayState.Contact_person_stick)
+			{
+				flicker(30);
+				_obj.SetUserData(GameplayState.Contact_person_flash);
+				play( "lovely" );
+			}	
+			if (_obj.GetUserData() == GameplayState.Contact_person_flash && !flickering())
+			{
+				//reset person
+				_obj.SetUserData(GameplayState.Contact_person_free);
 				play( "normal" );
 			}
 			
@@ -121,27 +179,12 @@ package
 			y = (_obj.GetPosition().y * ratio) - height/2;
 			angle = _obj.GetAngle() * (180 / Math.PI);
 			
-			///////////////////////////////////////////////////////////
-			//If we want persons to remain still during hook
-			///////////////////////////////////////////////////////////
-			//if (_obj.GetUserData() == GameplayState.Contact_person_stick)
-			//{
-				//flicker(30);
-				//_obj.SetUserData(GameplayState.Contact_person_flash);
-				//play( "lovely" );
-			//}
-			//else
-			//{
-				//x = (_obj.GetPosition().x * ratio) - width/2 ;
-				//y = (_obj.GetPosition().y * ratio) - height/2;
-				//angle = _obj.GetAngle() * (180 / Math.PI);
-			//}
-			
 			super.update();
         }
 		
 		override public function kill():void
 		{
+			FlxG.play(GameplayState.SndHookup);
 			this.visible = false;
 			this.destroy();
 			super.kill();

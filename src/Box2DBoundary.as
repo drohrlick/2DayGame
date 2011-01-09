@@ -47,7 +47,7 @@ package
 			_fixDef.shape = boxShape;
 			
 			_fixDef.filter.categoryBits = GameplayState.WallMask;
-			_fixDef.filter.maskBits = GameplayState.PersonMask | GameplayState.ShipMask;
+			_fixDef.filter.maskBits = GameplayState.PersonMask | GameplayState.ShipMask | GameplayState.RockMask;
 			
 			_bodyDef = new b2BodyDef();
 			_bodyDef.position.Set((x + (width / 2)) / ratio, (y + (height / 2)) / ratio);
