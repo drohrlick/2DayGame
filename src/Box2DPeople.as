@@ -45,6 +45,9 @@ package
 				loadGraphic(ImgM, false, false, 16, 16 );
 			else
 				loadGraphic(ImgW, false, false, 16, 16 );
+				
+			addAnimation( "normal", [0], 0 );
+			addAnimation( "lovely", [0, 1, 2, 3, 4], 5);
 		}
  
         public function createBody(id:int):void
@@ -93,16 +96,19 @@ package
 			{
 				flicker(30);
 				_obj.SetUserData(GameplayState.Contact_person_flash);
+				play( "lovely" );
 			}	
 			if (_obj.GetUserData() == GameplayState.Contact_person_flash && !flickering())
 			{
 				//reset person
 				_obj.SetUserData(GameplayState.Contact_person_free);
+				play( "normal" );
 			}
 			
 			if (_obj.GetUserData() == GameplayState.Contact_person_kill)
 			{
 				flicker(0);
+				play( "normal" );
 			}
 
 			x = (_obj.GetPosition().x * ratio) - width/2 ;

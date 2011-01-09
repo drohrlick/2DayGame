@@ -52,6 +52,7 @@ package
 													FlxU.random() * Loveroids.resX, 
 													(FlxU.random() * Loveroids.resY) - 300, 8, 8, _world);
 				add(_array_people[i]);
+				_array_people[i].play("lovely");
 			}
 		}
 		
