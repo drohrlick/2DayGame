@@ -63,7 +63,7 @@ package
             _fixDef.friction = _friction;                        
             _fixDef.shape = boxShape;
 			_fixDef.filter.categoryBits = GameplayState.ShipMask;
-			_fixDef.filter.maskBits = GameplayState.RockMask;
+			_fixDef.filter.maskBits = GameplayState.RockMask | GameplayState.WallMask;
  
             _bodyDef = new b2BodyDef();
             _bodyDef.position.Set((x + (width/2)) / ratio, (y + (height/2)) / ratio);
@@ -146,28 +146,6 @@ package
 			UpdateHook();
             
 			super.update();
-        }
- 
-        public function createBody():void
-        {            
-            var boxShape:b2PolygonShape = new b2PolygonShape();
-            boxShape.SetAsBox((width/2) / ratio, (height/2) /ratio);
- 
-            _fixDef = new b2FixtureDef();
-            _fixDef.density = _density;
-            _fixDef.restitution = _restitution;
-            _fixDef.friction = _friction;                        
-            _fixDef.shape = boxShape;
-			_fixDef.filter.categoryBits = GameplayState.ShipMask;
-			_fixDef.filter.maskBits = GameplayState.RockMask | GameplayState.WallMask;
- 
-            _bodyDef = new b2BodyDef();
-            _bodyDef.position.Set((x + (width/2)) / ratio, (y + (height/2)) / ratio);
-            _bodyDef.angle = _angle * (Math.PI / 180);
-            _bodyDef.type = _type;
- 
-            _obj = _world.CreateBody(_bodyDef);
-            _obj.CreateFixture(_fixDef);		
         }
 		
 		private function UpdateHook():void
