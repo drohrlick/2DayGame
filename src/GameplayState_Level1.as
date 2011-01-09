@@ -8,9 +8,9 @@ package
 	import Box2D.Common.Math.*;
 	
 	public class GameplayState_Level1 extends FlxState
-	{	
+	{		
+		private var _HUD:HUD;
 		private var _timer:Number = GameLogic.LevelTimeLimit;
-		private var _timerText:FlxText;
 		private var _ratio:Number = 30;
 	
 		protected var _world:b2World;
@@ -23,9 +23,11 @@ package
 
 		protected var _ship:Box2DShip;
 		
-		private var _numPeopleDied:int = 0;
+		private var _numPeopleDiedHappy:int = 0;
 		private var _numPeopleDiedLonely:int = 0;
 		private var _numPeople:int = 30;
+		private var _numPeopleGoal:int = 25;		//the number of loved people it takes to beat the level. 
+
 		protected var _array_people:Array;
 		
 		
@@ -35,8 +37,8 @@ package
 		{	
 			FlxG.playMusic(GameLogic.SndMainMusic);
 			
-			CreateText();
 			CreateGameObjects();
+			CreateText();
 
 			//background color
 			FlxState.bgColor = _backgroundColor;
@@ -65,10 +67,11 @@ package
 		
 		private function CreateText():void
 		{	
-			_timerText = new FlxText(Loveroids.resX / 2 - 25, 20,50, String(_timer));
-			_timerText.size = 20;
-			_timerText.alignment = "center";
-			add(_timerText);
+			_HUD = new HUD();
+			add(_HUD.TimerText);
+			add(_HUD.DiedHappyText);
+			add(_HUD.DiedLonelyText);
+			add(_HUD.GoalText);
 		}
 		
 		private function CreateGameObjects():void
@@ -97,6 +100,7 @@ package
 		override public function update():void
 		{		
 			UpdateTimer();
+			UpdateHUD();
 			
 			_world.Step(FlxG.elapsed, 10, 10);
 			//_world.ClearForces();
@@ -115,14 +119,12 @@ package
 					//	worldbody.SetPosition(_ship._hook1._obj.GetPosition());
 					//}
 					
-					//if (worldbody.GetUserData()== GameLogic.Contact_person_combine) 
-					if( data.state == GameLogic.State_People_Combine )
+					if( data.state == GameLogic.State_People_DieLove )
 					{
 						// ... just remove it!!
 						_world.DestroyBody(worldbody);
-						//worldbody.SetUserData(GameLogic.Contact_person_kill);
 						data.state = GameLogic.State_People_Kill;
-						_numPeopleDied++;
+						_numPeopleDiedHappy++;
 						FlxG.play(GameLogic.SndHookup);
 						
 						//make body fly back toward ship pos.
@@ -130,26 +132,20 @@ package
 						//var offset:b2Vec2 = _ship._obj.GetPosition() - worldbody.GetPosition();
 						//worldbody.SetPosition(_ship._obj.GetPosition());
 					}
-					//if (worldbody.GetUserData() == GameLogic.Contact_person_oldAge)
-					if( data.state == GameLogic.State_People_OldAge )
+					if( data.state == GameLogic.State_People_DieLonely )
 					{
 						_world.DestroyBody(worldbody);
-						//worldbody.SetUserData(GameLogic.Contact_person_kill);
 						data.state = GameLogic.State_People_Kill;
-						_numPeopleDied++;
 						_numPeopleDiedLonely++;
 						FlxG.play(GameLogic.SndBrokenHeart);
 					}
 				}
 			}
 			
-			if (_numPeopleDied == _numPeople)
-			{
-				//if(_numPeopleDiedLonely == 0)
-					FlxG.fade.start(0xff000000, 1, HappyTransition);
-				//else
-				//	FlxG.fade.start(0xff000000, 1, SadTransition);
-			}
+			if (_numPeopleDiedHappy >= _numPeopleGoal)
+				FlxG.fade.start(0xff000000, 1, HappyTransition);
+			else if ((_numPeopleDiedHappy + _numPeopleDiedLonely) == _numPeople)
+				FlxG.fade.start(0xff000000, 1, SadTransition);
 			
 			super.update();	
 		}
@@ -158,16 +154,22 @@ package
 		{
 			_timer -= FlxG.elapsed;
  	
-			_timerText.text = "" + FlxU.floor(_timer);
+			_HUD.TimerText.text = "" + FlxU.floor(_timer);
 			
 			if (_timer <= 0)
 				FlxG.fade.start(0xff000000, 1, SadTransition);
-
+		}
+		
+		private function UpdateHUD():void
+		{
+			_HUD.GoalText.text = "Goal: " + _numPeopleGoal;
+			_HUD.DiedHappyText.text = "Died Happy: " + _numPeopleDiedHappy;
+			_HUD.DiedLonelyText.text = "Died Lonely: " + _numPeopleDiedLonely;
 		}
 		
 		private function HappyTransition():void
 		{
-			FlxG.state = new HappyEndMenuState();						
+			FlxG.state = new GameplayState_Level2();						
 		}
 		
 		private function SadTransition():void 

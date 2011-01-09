@@ -10,7 +10,6 @@ package
     public class Box2DGrouping extends FlxGroup
     {	
         private var ratio:Number = 30;
-
 		
         public var _fixDef:b2FixtureDef;
         public var _bodyDef:b2BodyDef
@@ -109,8 +108,8 @@ package
             //_fixDef.density = _density;
             //_fixDef.shape = new b2CircleShape(_radius / ratio);
 			
-			_fixDef.filter.categoryBits = GameplayState.PersonMask;
-			_fixDef.filter.maskBits = GameplayState.HookMask | GameplayState.ShipMask | GameplayState.PersonMask | GameplayState.WallMask;
+			_fixDef.filter.categoryBits = GameLogic.PersonMask;
+			_fixDef.filter.maskBits = GameLogic.HookMask | GameLogic.ShipMask | GameLogic.PersonMask | GameLogic.WallMask;
  
             _bodyDef = new b2BodyDef();
             //_bodyDef.position.Set((x + (_radius)) / ratio, (y + (_radius/2)) / ratio);

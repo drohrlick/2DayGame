@@ -1,5 +1,5 @@
-package {
-	
+package 
+{
 	public class ObjectUserData
 	{
 		public function ObjectUserData( objectType:uint = 0, 
@@ -19,5 +19,4 @@ package {
 		public var event_data1:Number = 0;
 		public var event_data2:Number = 0;
 	}
-	
 }

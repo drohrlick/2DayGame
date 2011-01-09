@@ -114,17 +114,18 @@ package
 				x = (_obj.GetPosition().x * ratio) - width/2 ;
 				y = (_obj.GetPosition().y * ratio) - height / 2;
 				
+				trace("shot x: " + x);
+				
 				//non-sticky hooks
 				_shotTimer -= FlxG.elapsed;
+				if (_shotTimer < 0)
 				if (_shotTimer < 0)// || (_obj.GetUserData() as ObjectUserData).state == GameLogic.State_Hook_Stick)
 				{
-					//if (_obj.GetUserData() == GameLogic.Contact_hook_stick)
 					if((_obj.GetUserData() as ObjectUserData).state == GameLogic.State_Hook_Stick)
-						FlxG.play(GameLogic.SndCombine);
-					
+						FlxG.play(GameLogic.SndGrab);
+				
 					//reset hook when it runs out of time or hits something
 					AttachedToShip = true;
-					//_obj.SetUserData(GameLogic.Contact_hook_free);
 					(_obj.GetUserData() as ObjectUserData).state = GameLogic.State_Hook_Free;
 				}
 			}

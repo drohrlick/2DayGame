@@ -4,7 +4,7 @@ package
 	{
 		[Embed(source = "music/Gameplay1.mp3")] static public var SndMainMusic:Class;
 		[Embed(source = "sfx/laser_shot2.mp3")] static public var SndShoot:Class;		
-		[Embed(source = "sfx/laser_grab.mp3")] static public var SndCombine:Class;		
+		[Embed(source = "sfx/laser_grab.mp3")] static public var SndGrab:Class;		
 		[Embed(source = "sfx/Hookup.mp3")] static public var SndHookup:Class;		
 		[Embed(source = "sfx/BrokenHeart.mp3")] static public var SndBrokenHeart:Class;		
 		[Embed(source = "sfx/EngineRev.mp3")] static public var SndEngine:Class;		
@@ -16,13 +16,16 @@ package
 		static public var WallMask:uint = 0x0010;
 		static public var RockMask:uint = 0x0012;
 		
-		/*static public var Contact_person_free:String = new String("Person_Free");			//person free roaming
-		static public var Contact_person_stick:String = new String("Person_Sticking");		//person just stuck by hook
-		static public var Contact_person_flash:String = new String("Person_Flashing");		//person flashing and ready to combine
-		static public var Contact_person_combine:String = new String("Person_Combined");	//person combined with another
-		static public var Contact_person_kill:String = new String("Person_Killed");			//remove person once combined.
-		static public var Contact_person_oldAge:String = new String("Person_OldAge");		//remove person when they remain single and end flicker
-		static public var Contact_person_grouped:String = new String("Person_Grouped");		//person is appart of a group
+/*
+		static public var Contact_person_free:String = new String("Person_Free");				//person free roaming
+		static public var Contact_person_stick:String = new String("Person_Sticking");			//person just stuck by hook
+		static public var Contact_person_flash:String = new String("Person_Flashing");			//person flashing and ready to combine
+		static public var Contact_person_combine:String = new String("Person_Combined");		//person combined with another
+		static public var Contact_person_smoke:String = new String("Person_Smoke");				//person died with smoke.
+		static public var Contact_person_love:String = new String("Person_Love");				//person died with love.
+		static public var Contact_person_lonelyDeath:String = new String("Person_lonelyDeath");	//person died after smoking
+		static public var Contact_person_loveDeath:String = new String("Person_loveDeath");		//person dieg after hearts.
+		static public var Contact_person_kill:String = new String("Person_Killed");				//remove person.
 		static public var Contact_hook_free:String = new String("Hook_Free");
 		static public var Contact_hook_stick:String = new String("Hook_Sticking");
 		static public var Contact_player:String = new String("Player");
@@ -61,8 +64,11 @@ package
 		static public var State_People_Flash:uint = 3;
 		static public var State_People_Combine:uint = 4;
 		static public var State_People_Kill:uint = 5;
-		static public var State_People_OldAge:uint = 6;
+		static public var State_People_DieLonely:uint = 6;
 		static public var State_People_Grouped:uint = 7;
+		static public var State_People_DieLove:uint = 10;
+		static public var State_People_Smoke:uint = 11;
+		static public var State_People_Love:uint = 12;
 		
 		static public var State_Hook_Free:uint = 8;
 		static public var State_Hook_Stick:uint = 9;

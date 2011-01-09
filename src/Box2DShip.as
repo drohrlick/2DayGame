@@ -108,13 +108,7 @@ package
 			//update hook & chains
 			UpdateHooks();
 			UpdateChains();
-				
-			/*if (_obj.GetUserData() == GameLogic.Contact_player_collision)
-			{
-				_obj.SetUserData(GameLogic.Contact_player);
-				//FlxG.play(GameplayState.SndShipCollision);
-			}*/	
-			
+						
 			var data:ObjectUserData = _obj.GetUserData() as ObjectUserData;
 			if ( data.event == GameLogic.Event_Ship_Collision )
 			{

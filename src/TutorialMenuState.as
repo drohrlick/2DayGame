@@ -11,7 +11,7 @@ package
 	{
 		[Embed(source = "sfx/menu_in.mp3")] private var SndMenuIn:Class;		
 		
-		private var _backgroundColor:Number = 0xCCCCCCCC;
+		private var _backgroundColor:Number = 0xff225511;
 		
 		protected var _world:b2World;
 		
@@ -20,7 +20,7 @@ package
 		
 		protected var _ship:Box2DShip;
 		
-		private var _timer:Number = 2;
+		private var _timer:Number = 1;
 		private var _displayTip:Boolean = false;		
 		
 		override public function create():void
