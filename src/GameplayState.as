@@ -12,17 +12,28 @@ package
 		static public var ShipMask:uint = 0x0002;
 		static public var HookMask:uint = 0x0004;
 		static public var RockMask:uint = 0x0008;
+		static public var WallMask:uint = 0x0010;
+		
+		private var ratio:Number = 30;
 		
 		protected var _frameCounterTxt:FlxText;
 		protected var _frameCounter:int;
 		protected var _ship:Box2DShip;
 		protected var _world:b2World;
 		
+		protected var _ceiling:Box2DBoundary;
+		protected var _floor:Box2DBoundary;
+		protected var _wallLeft:Box2DBoundary;
+		protected var _wallRight:Box2DBoundary;
+		
 		protected var _array_asteroids:Array;
+		
+		private var _numPeople:int = 20;
+		protected var _array_people:Array;
 		
 		protected var _line:Line;
 		
-		private var _numAsteroids:int = 20;
+		private var _numAsteroids:int = 40;
 		private var _backgroundColor:Number = 0xDDDDDDDD;
 		
 		override public function create():void
@@ -38,6 +49,22 @@ package
 		{
 			var gravity:b2Vec2 = new b2Vec2(0, 0);
 			_world = new b2World(gravity, true);
+			
+			// create the bounding walls
+			_ceiling = new Box2DBoundary( -30, -30, FlxG.width + 60, 30, _world ); 
+			_floor = new Box2DBoundary( -30, FlxG.height, FlxG.width + 60, 30, _world );
+			_wallLeft = new Box2DBoundary( -30, 0, 30, FlxG.height, _world );
+			_wallRight = new Box2DBoundary( FlxG.width, 0, 30, FlxG.height, _world );
+			
+			_ceiling.createBody();
+			_floor.createBody();
+			_wallLeft.createBody();
+			_wallRight.createBody();
+			
+			add(_ceiling);
+			add(_floor);
+			add(_wallLeft);
+			add(_wallRight);
 		}
 		
 		private function CreateText():void
@@ -58,7 +85,7 @@ package
 			var i:int;
 
 			SetupWorld();		
-
+			/*
 			_array_asteroids = new Array();
 			for (i = 0; i < _numAsteroids; i++)
 			{
@@ -67,7 +94,15 @@ package
 				_array_asteroids[i].loadGraphic(_array_asteroids[i].Img, false, false, 32, 32);
 				add(_array_asteroids[i]);
 			}
-	
+			*/
+			
+			_array_people = new Array()
+			for (i = 0; i < _numAsteroids; i++)
+			{
+				_array_people[i] = new Box2DPeople( FlxU.random() * Loveroids.resX, FlxU.random() * Loveroids.resY, 8, 8, _world);
+				add(_array_people[i]);
+			}
+			
 			_ship = new Box2DShip(Loveroids.resX / 2 - 16, Loveroids.resY / 2 - 16, 32, 32, _world);
 			_ship.createBody();
 			_ship.loadGraphic(_ship.Img, false, false,32,32);

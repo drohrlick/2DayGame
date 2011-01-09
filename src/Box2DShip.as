@@ -21,6 +21,7 @@ package
         private var _world:b2World;
  
         //Physics params default value
+
         public var _friction:Number = 0.1;
         public var _restitution:Number = 0.3;
         public var _density:Number = 0.7;
@@ -62,7 +63,7 @@ package
             _fixDef.friction = _friction;                        
             _fixDef.shape = boxShape;
 			_fixDef.filter.categoryBits = GameplayState.ShipMask;
-			_fixDef.filter.maskBits = GameplayState.RockMask;
+			_fixDef.filter.maskBits = GameplayState.RockMask | GameplayState.WallMask;
  
             _bodyDef = new b2BodyDef();
             _bodyDef.position.Set((x + (width/2)) / ratio, (y + (height/2)) / ratio);
@@ -75,6 +76,7 @@ package
 		
         override public function update():void
         {
+
             x = (_obj.GetPosition().x * ratio) - width/2 ;
             y = (_obj.GetPosition().y * ratio) - height/2;
 
@@ -139,7 +141,12 @@ package
 				angle %= 360;
 							
 			frame = (angle + 22.5) / 45;
-		}
+						
+			//update hook
+			UpdateHook();
+            
+			super.update();
+        }
 		
 		private function UpdateHook():void
 		{	
