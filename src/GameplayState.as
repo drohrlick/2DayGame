@@ -18,14 +18,18 @@ package
 		
 		protected var _frameCounterTxt:FlxText;
 		protected var _frameCounter:int;
-		protected var _ship:Box2DShip;
 		protected var _world:b2World;
+		protected var _contactListener:MyContactListener;
 		
 		protected var _ceiling:Box2DBoundary;
 		protected var _floor:Box2DBoundary;
 		protected var _wallLeft:Box2DBoundary;
 		protected var _wallRight:Box2DBoundary;
+
+		protected var _ship:Box2DShip;
+
 		
+		private var _numAsteroids:int = 40;
 		protected var _array_asteroids:Array;
 		
 		private var _numPeople:int = 20;
@@ -33,7 +37,6 @@ package
 		
 		protected var _line:Line;
 		
-		private var _numAsteroids:int = 40;
 		private var _backgroundColor:Number = 0xDDDDDDDD;
 		
 		override public function create():void
@@ -47,8 +50,14 @@ package
 		
 		private function SetupWorld():void
 		{
+			
+			
 			var gravity:b2Vec2 = new b2Vec2(0, 0);
 			_world = new b2World(gravity, true);
+			
+			//create a contact listener for collions in this world
+			_contactListener = new MyContactListener();
+			_world.SetContactListener(_contactListener);
 			
 			// create the bounding walls
 			_ceiling = new Box2DBoundary( -30, -30, FlxG.width + 60, 30, _world ); 
@@ -97,7 +106,7 @@ package
 			*/
 			
 			_array_people = new Array()
-			for (i = 0; i < _numAsteroids; i++)
+			for (i = 0; i < _numPeople; i++)
 			{
 				_array_people[i] = new Box2DPeople( FlxU.random() * Loveroids.resX, FlxU.random() * Loveroids.resY, 8, 8, _world);
 				add(_array_people[i]);

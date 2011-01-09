@@ -1,5 +1,6 @@
 package
 {
+	import Box2D.Dynamics.Contacts.b2Contact;
     import org.flixel.*;
  
     import Box2D.Dynamics.*;
@@ -35,6 +36,7 @@ package
 		
 		//Other variables
 		private var _thrust:b2Vec2; 
+//		private var _maxHookThurst:Number = 0.2;
 		private var _maxHookThurst:Number = 0.1;
 		private var _shotTimer:Number;
 		private var _shotTimeLimit:Number = 1;
@@ -68,7 +70,7 @@ package
             _fixDef.shape = boxShape;
  			_fixDef.filter.categoryBits = GameplayState.HookMask;
 			_fixDef.filter.maskBits = GameplayState.RockMask;
-
+			
             _bodyDef = new b2BodyDef();
             _bodyDef.position.Set((x + (width/2)) / ratio, (y + (height/2)) / ratio);
             _bodyDef.angle = _angle * (Math.PI / 180);
@@ -94,7 +96,6 @@ package
 				_shotTimer -= FlxG.elapsed;
 				if (_shotTimer < 0)
 					AttactchedToShip = true;
-
 			}
 
             angle = _angle * (180 / Math.PI);            
