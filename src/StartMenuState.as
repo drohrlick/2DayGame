@@ -16,13 +16,12 @@ package
 		
 		protected var _world:b2World;
 		
-		private var _numPeople:int = 20;
+		private var _numPeople:int = 100;
 		protected var _array_people:Array;
+		private var _resetPos:b2Vec2 = new b2Vec2(100, 100);
 		
 		override public function create():void
-		{
-			CreateGameObjects();
-			
+		{			
 			FlxG.playMusic(SndMainMusic);
 			
 			//A couple of simple text fields
@@ -34,6 +33,15 @@ package
 			t = new FlxText(0,FlxG.height/2+100,FlxG.width,"click to play");
 			t.alignment = "center";
 			add(t);
+
+			CreateGameObjects();
+			
+			//make some people go in front and others  not.
+			t = new FlxText(0,FlxG.height/2-99,FlxG.width,"Loveroids");
+			t.size = 60;
+			t.alignment = "center";
+			add(t);
+
 			
 			FlxState.bgColor = _backgroundColor;
 			
@@ -50,7 +58,7 @@ package
 			{
 				_array_people[i] = new Box2DPeople( i,
 													FlxU.random() * Loveroids.resX, 
-													(FlxU.random() * Loveroids.resY) - 300, 8, 8, _world);
+													(FlxU.random() * Loveroids.resY) - Loveroids.resY, 8, 8, _world);
 				add(_array_people[i]);
 			}
 		}
@@ -69,12 +77,9 @@ package
 			
 			for (var i:int = 0; i < _numPeople; i++)
 			{
-				if (_array_people[i].x < 0 ||
-					_array_people[i].x > Loveroids.resX)
+				if (_array_people[i].y > Loveroids.resY)
 				{
-					_array_people[i].x = FlxU.random() * Loveroids.resX;
-					_array_people[i].y = (FlxU.random() * Loveroids.resY) - 1000;
-				}
+				}				
 			}
 			
 			//Switch to play state if the mouse is pressed

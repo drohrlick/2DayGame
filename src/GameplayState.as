@@ -28,7 +28,9 @@ package
 		static public var Contact_player:String = new String("Player");
 		static public var Contact_boundary:String = new String("Boundary");		
 		
-		private var ratio:Number = 30;
+		private var _timer:Number = 60;
+		private var _timerText:FlxText;
+		private var _ratio:Number = 30;
 		
 		protected var _frameCounterTxt:FlxText;
 		protected var _frameCounter:int;
@@ -91,8 +93,8 @@ package
 			
 			_frameCounter = new int(0);
 			
-			add(new FlxText(0, 0, 100, "Loveroids")); //adds a 100px wide text field at position 0,0 (upper left)
-
+			_timerText = new FlxText(20, 20, 100, String(_timer));
+			add(_timerText); //adds a 100px wide text field at position 0,0 (upper left)
 		}
 		
 		private function CreateGameObjects():void
@@ -130,7 +132,7 @@ package
 				//The main game loop function
 		override public function update():void
 		{		
-			//_ship.myUpdate();
+			UpdateTimer();
 			
 			_world.Step(FlxG.elapsed, 10, 10);
 			//_world.ClearForces();
@@ -145,7 +147,7 @@ package
 						_world.DestroyBody(worldbody);
 						worldbody.SetUserData(GameplayState.Contact_person_kill);
 						_numPeopleLoved++;
-					
+						
 						//make body fly back toward ship pos.
 						//_ship._personHolder1 = worldbody.GetPosition();
 						//var offset:b2Vec2 = _ship._obj.GetPosition() - worldbody.GetPosition();
@@ -160,6 +162,16 @@ package
 			super.update();	
 									
 
+		}
+		
+		private function UpdateTimer():void
+		{
+			_timer -= FlxG.elapsed;
+ 	
+			_timerText.text = "" + FlxU.floor(_timer);
+			
+			if(_timer <= 0)
+				FlxG.state = new GameOverMenuState();
 		}
 	}
 }
