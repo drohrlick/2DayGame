@@ -54,8 +54,8 @@ package
             _fixDef.restitution = _restitution;
             _fixDef.friction = _friction;                        
             _fixDef.shape = boxShape;
-			_fixDef.filter.categoryBits = GameplayState.RockMask;
-			_fixDef.filter.maskBits = GameplayState.HookMask | GameplayState.ShipMask | GameplayState.PersonMask | GameplayState.RockMask | GameplayState.WallMask;
+			_fixDef.filter.categoryBits = GameLogic.RockMask;
+			_fixDef.filter.maskBits = GameLogic.HookMask | GameLogic.ShipMask | GameLogic.PersonMask | GameLogic.RockMask | GameLogic.WallMask;
  
             _bodyDef = new b2BodyDef();
             _bodyDef.position.Set((x + (width/2)) / ratio, (y + (height/2)) / ratio);
@@ -66,7 +66,7 @@ package
             _obj.CreateFixture(_fixDef);
 			_obj.SetAngle(FlxU.random() * 360);
 			_obj.SetAngularVelocity(FlxU.random() * 8 - 4);
-			_obj.SetUserData(GameplayState.Contact_asteroid);			
+			_obj.SetUserData(GameLogic.Contact_asteroid);			
 			var randX:int;
 			var randY:int;
 			

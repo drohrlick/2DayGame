@@ -7,41 +7,12 @@ package
 	import Box2D.Collision.Shapes.*;
 	import Box2D.Common.Math.*;
 	
-	public class GameplayState extends FlxState
-	{
-		[Embed(source = "music/Gameplay1.mp3")] static public var SndMainMusic:Class;
-		[Embed(source = "sfx/laser_shot2.mp3")] static public var SndShoot:Class;		
-		[Embed(source = "sfx/laser_grab.mp3")] static public var SndCombine:Class;		
-		[Embed(source = "sfx/Hookup.mp3")] static public var SndHookup:Class;		
-		[Embed(source = "sfx/BrokenHeart.mp3")] static public var SndBrokenHeart:Class;		
-		[Embed(source = "sfx/EngineRev.mp3")] static public var SndEngine:Class;		
-		[Embed(source = "sfx/Collision.mp3")] static public var SndShipCollision:Class;		
-		
-		static public var ShipMask:uint = 0x0002;
-		static public var HookMask:uint = 0x0004;
-		static public var PersonMask:uint = 0x0008;
-		static public var WallMask:uint = 0x0010;
-		static public var RockMask:uint = 0x0012;
-		
-		static public var Contact_person_free:String = new String("Person_Free");			//person free roaming
-		static public var Contact_person_stick:String = new String("Person_Sticking");		//person just stuck by hook
-		static public var Contact_person_flash:String = new String("Person_Flashing");		//person flashing and ready to combine
-		static public var Contact_person_combine:String = new String("Person_Combined");	//person combined with another
-		static public var Contact_person_kill:String = new String("Person_Killed");			//remove person once combined.
-		static public var Contact_person_oldAge:String = new String("Person_OldAge");		//remove person when they remain single and end flicker
-		static public var Contact_hook_free:String = new String("Hook_Free");
-		static public var Contact_hook_stick:String = new String("Hook_Sticking");
-		static public var Contact_player:String = new String("Player");
-		static public var Contact_player_collision:String = new String("Player_Collision");		
-		static public var Contact_boundary:String = new String("Boundary");		
-		static public var Contact_asteroid:String = new String("Asteroid");
-		
-		private var _timer:Number = 60;
+	public class GameplayState_Level1 extends FlxState
+	{	
+		private var _timer:Number = GameLogic.LevelTimeLimit;
 		private var _timerText:FlxText;
 		private var _ratio:Number = 30;
-		
-		protected var _frameCounterTxt:FlxText;
-		protected var _frameCounter:int;
+	
 		protected var _world:b2World;
 		protected var _contactListener:MyContactListener;
 		
@@ -54,11 +25,8 @@ package
 		
 		private var _numPeopleDied:int = 0;
 		private var _numPeopleDiedLonely:int = 0;
-		private var _numPeople:int = 10;
+		private var _numPeople:int = 30;
 		protected var _array_people:Array;
-		
-		private var _numAsteroids:int = 10;
-		protected var _array_asteroids:Array;
 		
 		protected var _line:Line;
 		
@@ -66,7 +34,7 @@ package
 		
 		override public function create():void
 		{	
-			FlxG.playMusic(SndMainMusic);
+			FlxG.playMusic(GameLogic.SndMainMusic);
 			
 			CreateText();
 			CreateGameObjects();
@@ -97,14 +65,7 @@ package
 		}
 		
 		private function CreateText():void
-		{
-			_frameCounterTxt = new FlxText(0, 0, FlxG.width);
-			_frameCounterTxt.color = 0xd8eba2;
-			_frameCounterTxt.alignment = "right";
-			add(_frameCounterTxt);
-			
-			_frameCounter = new int(0);
-			
+		{	
 			_timerText = new FlxText(Loveroids.resX / 2 - 25, 20,50, String(_timer));
 			_timerText.size = 20;
 			_timerText.alignment = "center";
@@ -123,13 +84,6 @@ package
 				_array_people[i] = new Box2DPeople( i, FlxU.random() * Loveroids.resX, FlxU.random() * Loveroids.resY, 8, 8, _world);
 				_array_people[i].createBodyGameplay(i);
 				add(_array_people[i]);
-			}
-			
-			_array_asteroids = new Array()
-			for (i = 0; i < _numAsteroids; i++)
-			{
-				_array_asteroids[i] = new Box2DAsteroid( i, FlxU.random() * Loveroids.resX, FlxU.random() * Loveroids.resY, 32, 32, _world);
-				add(_array_asteroids[i]);
 			}
 			
 			_ship = new Box2DShip(0, Loveroids.resX / 2 - 16, Loveroids.resY / 2 - 16, 32, 32, _world);
@@ -160,41 +114,39 @@ package
 					//	worldbody.SetPosition(_ship._hook1._obj.GetPosition());
 					//}
 					
-					if (worldbody.GetUserData()== GameplayState.Contact_person_combine) 
+					if (worldbody.GetUserData()== GameLogic.Contact_person_combine) 
 					{
 						// ... just remove it!!
 						_world.DestroyBody(worldbody);
-						worldbody.SetUserData(GameplayState.Contact_person_kill);
+						worldbody.SetUserData(GameLogic.Contact_person_kill);
 						_numPeopleDied++;
-						FlxG.play(GameplayState.SndHookup);
+						FlxG.play(GameLogic.SndHookup);
 						
 						//make body fly back toward ship pos.
 						//_ship._personHolder1 = worldbody.GetPosition();
 						//var offset:b2Vec2 = _ship._obj.GetPosition() - worldbody.GetPosition();
 						//worldbody.SetPosition(_ship._obj.GetPosition());
 					}
-					if (worldbody.GetUserData() == GameplayState.Contact_person_oldAge)
+					if (worldbody.GetUserData() == GameLogic.Contact_person_oldAge)
 					{
 						_world.DestroyBody(worldbody);
-						worldbody.SetUserData(GameplayState.Contact_person_kill);
+						worldbody.SetUserData(GameLogic.Contact_person_kill);
 						_numPeopleDied++;
 						_numPeopleDiedLonely++;
-						FlxG.play(GameplayState.SndBrokenHeart);
+						FlxG.play(GameLogic.SndBrokenHeart);
 					}
 				}
 			}
 			
 			if (_numPeopleDied == _numPeople)
 			{
-				if(_numPeopleDiedLonely == 0)
+				//if(_numPeopleDiedLonely == 0)
 					FlxG.fade.start(0xff000000, 1, HappyTransition);
-				else
-					FlxG.fade.start(0xff000000, 1, SadTransition);
+				//else
+				//	FlxG.fade.start(0xff000000, 1, SadTransition);
 			}
 			
 			super.update();	
-									
-
 		}
 		
 		private function UpdateTimer():void

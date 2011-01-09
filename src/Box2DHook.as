@@ -68,8 +68,8 @@ package
             _fixDef.restitution = _restitution;
             _fixDef.friction = _friction;                        
             _fixDef.shape = boxShape;
- 			_fixDef.filter.categoryBits = GameplayState.HookMask;
-			_fixDef.filter.maskBits = GameplayState.PersonMask | GameplayState.RockMask;
+ 			_fixDef.filter.categoryBits = GameLogic.HookMask;
+			_fixDef.filter.maskBits = GameLogic.PersonMask | GameLogic.RockMask;
 
             _bodyDef = new b2BodyDef();
             _bodyDef.position.Set((x + (width/2)) / ratio, (y + (height/2)) / ratio);
@@ -78,7 +78,7 @@ package
 			
             _obj = _world.CreateBody(_bodyDef);
             _obj.CreateFixture(_fixDef);
-			_obj.SetUserData(GameplayState.Contact_hook_free);
+			_obj.SetUserData(GameLogic.Contact_hook_free);
         }
  
         override public function update():void
@@ -114,14 +114,14 @@ package
 				
 				//non-sticky hooks
 				_shotTimer -= FlxG.elapsed;
-				if (_shotTimer < 0 || _obj.GetUserData() == GameplayState.Contact_hook_stick)
+				if (_shotTimer < 0 || _obj.GetUserData() == GameLogic.Contact_hook_stick)
 				{
-					if (_obj.GetUserData() == GameplayState.Contact_hook_stick)
-						FlxG.play(GameplayState.SndCombine);
+					if (_obj.GetUserData() == GameLogic.Contact_hook_stick)
+						FlxG.play(GameLogic.SndCombine);
 					
 					//reset hook when it runs out of time or hits something
 					AttachedToShip = true;
-					_obj.SetUserData(GameplayState.Contact_hook_free);
+					_obj.SetUserData(GameLogic.Contact_hook_free);
 				}
 			}
 
@@ -138,7 +138,7 @@ package
  
 		public function Shoot(x:int, y:int):void
 		{
-			FlxG.play(GameplayState.SndShoot);
+			FlxG.play(GameLogic.SndShoot);
 			_obj.SetPosition(new b2Vec2(_posX, _posY));
 			
 			//reset thrust

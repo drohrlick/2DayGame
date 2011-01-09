@@ -46,8 +46,8 @@ package
 			_fixDef.restitution = _restitution;
 			_fixDef.shape = boxShape;
 			
-			_fixDef.filter.categoryBits = GameplayState.WallMask;
-			_fixDef.filter.maskBits = GameplayState.PersonMask | GameplayState.ShipMask | GameplayState.RockMask;
+			_fixDef.filter.categoryBits = GameLogic.WallMask;
+			_fixDef.filter.maskBits = GameLogic.PersonMask | GameLogic.ShipMask | GameLogic.RockMask;
 			
 			_bodyDef = new b2BodyDef();
 			_bodyDef.position.Set((x + (width / 2)) / ratio, (y + (height / 2)) / ratio);
@@ -56,7 +56,7 @@ package
 			
 			_obj = _world.CreateBody(_bodyDef);
 			_obj.CreateFixture(_fixDef);
-			_obj.SetUserData(GameplayState.Contact_boundary);
+			_obj.SetUserData(GameLogic.Contact_boundary);
 		}
 		
 		override public function update():void

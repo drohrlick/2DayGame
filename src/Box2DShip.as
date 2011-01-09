@@ -79,8 +79,8 @@ package
             _fixDef.restitution = _restitution;
             _fixDef.friction = _friction;                        
             _fixDef.shape = boxShape;
-			_fixDef.filter.categoryBits = GameplayState.ShipMask;
-			_fixDef.filter.maskBits = GameplayState.PersonMask | GameplayState.WallMask;
+			_fixDef.filter.categoryBits = GameLogic.ShipMask;
+			_fixDef.filter.maskBits = GameLogic.PersonMask | GameLogic.WallMask;
  
             _bodyDef = new b2BodyDef();
             _bodyDef.position.Set((x + (width/2)) / ratio, (y + (height/2)) / ratio);
@@ -89,7 +89,7 @@ package
  
             _obj = _world.CreateBody(_bodyDef);
             _obj.CreateFixture(_fixDef);	
-			_obj.SetUserData(GameplayState.Contact_player);
+			_obj.SetUserData(GameLogic.Contact_player);
         }
 		
         override public function update():void
@@ -108,9 +108,9 @@ package
 			UpdateHooks();
 			UpdateChains();
 			
-			if (_obj.GetUserData() == GameplayState.Contact_player_collision)
+			if (_obj.GetUserData() == GameLogic.Contact_player_collision)
 			{
-				_obj.SetUserData(GameplayState.Contact_player);
+				_obj.SetUserData(GameLogic.Contact_player);
 				//FlxG.play(GameplayState.SndShipCollision);
 			}			
             
@@ -126,7 +126,7 @@ package
 			if (FlxG.keys.W)
 			{
 				if (FlxG.keys.justPressed("W"))
-					FlxG.play(GameplayState.SndEngine); 
+					FlxG.play(GameLogic.SndEngine); 
 					
 				_angle = _obj.GetAngle();
 				_pos = _obj.GetPosition();
@@ -136,7 +136,7 @@ package
 			if (FlxG.keys.S)
 			{
 				if (FlxG.keys.justPressed("S"))
-					FlxG.play(GameplayState.SndEngine); 
+					FlxG.play(GameLogic.SndEngine); 
 				
 				_angle = _obj.GetAngle();
 				_pos = _obj.GetPosition();
@@ -158,13 +158,13 @@ package
 			if (FlxG.keys.A)
 			{
 				if (FlxG.keys.justPressed("A"))
-					FlxG.play(GameplayState.SndEngine); 
+					FlxG.play(GameLogic.SndEngine); 
 				_rotation = -_maxRotVelocity;
 			}
 			if (FlxG.keys.D)
 			{
 				if (FlxG.keys.justPressed("D"))
-					FlxG.play(GameplayState.SndEngine); 
+					FlxG.play(GameLogic.SndEngine); 
 				_rotation = _maxRotVelocity;
 			}
 			_obj.SetAngularVelocity(_rotation);

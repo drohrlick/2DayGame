@@ -65,8 +65,8 @@ package
             _fixDef.restitution = _restitution;
             _fixDef.friction = _friction;                        
             _fixDef.shape = boxShape;
-			_fixDef.filter.categoryBits = GameplayState.PersonMask;
-			_fixDef.filter.maskBits = GameplayState.HookMask | GameplayState.ShipMask | GameplayState.PersonMask | GameplayState.WallMask;
+			_fixDef.filter.categoryBits = GameLogic.PersonMask;
+			_fixDef.filter.maskBits = GameLogic.HookMask | GameLogic.ShipMask | GameLogic.PersonMask | GameLogic.WallMask;
 			
             _bodyDef = new b2BodyDef();
             _bodyDef.position.Set((x + (width/2)) / ratio, (y + (height/2)) / ratio);
@@ -77,7 +77,7 @@ package
             _obj.CreateFixture(_fixDef);
 			_obj.SetAngle(FlxU.random() * 360);
 			_obj.SetAngularVelocity(FlxU.random() * 8 - 4);
-			_obj.SetUserData(GameplayState.Contact_person_free);
+			_obj.SetUserData(GameLogic.Contact_person_free);
 			
 			var randX:int;
 			var randY:int;
@@ -119,8 +119,8 @@ package
             _fixDef.restitution = _restitution;
             _fixDef.friction = _friction;                        
             _fixDef.shape = boxShape;
-			_fixDef.filter.categoryBits = GameplayState.PersonMask;
-			_fixDef.filter.maskBits = GameplayState.HookMask | GameplayState.ShipMask | GameplayState.PersonMask | GameplayState.WallMask;
+			_fixDef.filter.categoryBits = GameLogic.PersonMask;
+			_fixDef.filter.maskBits = GameLogic.HookMask | GameLogic.ShipMask | GameLogic.PersonMask | GameLogic.WallMask;
 			
             _bodyDef = new b2BodyDef();
             _bodyDef.position.Set((x + (width/2)) / ratio, (y + (height/2)) / ratio);
@@ -131,23 +131,23 @@ package
             _obj.CreateFixture(_fixDef);
 			_obj.SetAngle(0);
 			_obj.SetAngularVelocity(0);
-			_obj.SetUserData(GameplayState.Contact_person_free);
+			_obj.SetUserData(GameLogic.Contact_person_free);
 				
 			_obj.SetLinearVelocity(new b2Vec2(0, 0));
         }
 		
 		public function updateTutorial():void
 		{
-			if (_obj.GetUserData() == GameplayState.Contact_person_stick)
+			if (_obj.GetUserData() == GameLogic.Contact_person_stick)
 			{
 				flicker(30);
-				_obj.SetUserData(GameplayState.Contact_person_flash);
+				_obj.SetUserData(GameLogic.Contact_person_flash);
 				play( "lovely" );
 			}	
-			if (_obj.GetUserData() == GameplayState.Contact_person_flash && !flickering())
+			if (_obj.GetUserData() == GameLogic.Contact_person_flash && !flickering())
 			{
 				//reset person
-				_obj.SetUserData(GameplayState.Contact_person_free);
+				_obj.SetUserData(GameLogic.Contact_person_free);
 				play( "normal" );
 			}
 			
@@ -156,20 +156,20 @@ package
 		
 		override public function update():void
         {
-			if (_obj.GetUserData() == GameplayState.Contact_person_stick)
+			if (_obj.GetUserData() == GameLogic.Contact_person_stick)
 			{
 				flicker(30);
-				_obj.SetUserData(GameplayState.Contact_person_flash);
+				_obj.SetUserData(GameLogic.Contact_person_flash);
 				play( "lovely" );
 			}	
-			if (_obj.GetUserData() == GameplayState.Contact_person_flash && !flickering())
+			if (_obj.GetUserData() == GameLogic.Contact_person_flash && !flickering())
 			{
 				//reset person
-				_obj.SetUserData(GameplayState.Contact_person_free);
+				_obj.SetUserData(GameLogic.Contact_person_free);
 				play( "normal" );
 			}
 			
-			if (_obj.GetUserData() == GameplayState.Contact_person_kill)
+			if (_obj.GetUserData() == GameLogic.Contact_person_kill)
 			{
 				kill();
 				play( "normal" );
@@ -184,7 +184,7 @@ package
 		
 		override public function kill():void
 		{
-			FlxG.play(GameplayState.SndHookup);
+			FlxG.play(GameLogic.SndHookup);
 			this.visible = false;
 			this.destroy();
 			super.kill();

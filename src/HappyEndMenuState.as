@@ -9,6 +9,7 @@ package
 	
 	public class HappyEndMenuState extends FlxState
 	{
+		[Embed(source = "sfx/GameWin.mp3")] private var SndMusic:Class;		
 		[Embed(source = "sfx/menu_in.mp3")] private var SndMenuIn:Class;		
 
 		private var _backgroundColor:Number = 0xff783629;
@@ -18,6 +19,9 @@ package
 		
 		override public function create():void
 		{			
+			FlxG.music.stop();
+			FlxG.play(SndMusic);
+			
 			//A couple of simple text fields
 			var t:FlxText;
 			t = new FlxText(0,FlxG.height/2-100,FlxG.width,"Yay you won!");
