@@ -41,10 +41,19 @@ package
             _world = w
 			
 			createBody(id);
-			if(FlxU.random() < 0.5 )
+			if (FlxU.random() < 0.5 )
+			{
 				loadGraphic(ImgM, false, false, 16, 16 );
+				this.color = 0x0099FF;
+			}
 			else
+			{
 				loadGraphic(ImgW, false, false, 16, 16 );
+				this.color = 0xFFCCFF;
+			}
+				
+			addAnimation( "normal", [0], 0 );
+			addAnimation( "lovely", [0, 1, 2, 3, 4], 5);
 		}
  
         public function createBody(id:int):void
@@ -64,7 +73,7 @@ package
             _bodyDef.position.Set((x + (width/2)) / ratio, (y + (height/2)) / ratio);
             _bodyDef.angle = _angle * (Math.PI / 180);
             _bodyDef.type = _type
- 
+			 
             _obj = _world.CreateBody(_bodyDef);
             _obj.CreateFixture(_fixDef);
 			_obj.SetAngle(FlxU.random() * 360);
@@ -93,18 +102,21 @@ package
 			{
 				flicker(30);
 				_obj.SetUserData(GameplayState.Contact_person_flash);
+				play( "lovely" );
 			}	
 			if (_obj.GetUserData() == GameplayState.Contact_person_flash && !flickering())
 			{
 				//reset person
 				_obj.SetUserData(GameplayState.Contact_person_free);
+				play( "normal" );
 			}
 			
 			if (_obj.GetUserData() == GameplayState.Contact_person_kill)
 			{
-				flicker(0);
+				kill();
+				play( "normal" );
 			}
-
+			
 			x = (_obj.GetPosition().x * ratio) - width/2 ;
 			y = (_obj.GetPosition().y * ratio) - height/2;
 			angle = _obj.GetAngle() * (180 / Math.PI);
@@ -114,7 +126,10 @@ package
 		
 		override public function kill():void
 		{
-		
+			FlxG.play(GameplayState.SndHookup);
+			this.visible = false;
+			this.destroy();
+			super.kill();
 		}
     }
 }
