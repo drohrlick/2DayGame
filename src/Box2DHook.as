@@ -78,7 +78,9 @@ package
 			
             _obj = _world.CreateBody(_bodyDef);
             _obj.CreateFixture(_fixDef);
-			_obj.SetUserData(GameLogic.Contact_hook_free);
+			//_obj.SetUserData(GameLogic.Contact_hook_free);
+			_obj.SetUserData( new ObjectUserData(GameLogic.Type_Boundary, GameLogic.State_Hook_Free));
+			
         }
  
         override public function update():void
@@ -114,14 +116,16 @@ package
 				
 				//non-sticky hooks
 				_shotTimer -= FlxG.elapsed;
-				if (_shotTimer < 0 || _obj.GetUserData() == GameLogic.Contact_hook_stick)
+				if (_shotTimer < 0 || (_obj.GetUserData() as ObjectUserData).state == GameLogic.State_Hook_Stick)
 				{
-					if (_obj.GetUserData() == GameLogic.Contact_hook_stick)
+					//if (_obj.GetUserData() == GameLogic.Contact_hook_stick)
+					if((_obj.GetUserData() as ObjectUserData).state == GameLogic.State_Hook_Stick)
 						FlxG.play(GameLogic.SndCombine);
 					
 					//reset hook when it runs out of time or hits something
 					AttachedToShip = true;
-					_obj.SetUserData(GameLogic.Contact_hook_free);
+					//_obj.SetUserData(GameLogic.Contact_hook_free);
+					(_obj.GetUserData() as ObjectUserData).state = GameLogic.State_Hook_Free;
 				}
 			}
 

@@ -76,7 +76,8 @@ package
 					_array_people[i] = new Box2DPeople( i, 250 + (i * 20) + ((i % 2) * 5), 100, 8, 8, _world);
 
 				_array_people[i].createBodyTutorial(i);
-				_array_people[i]._obj.SetUserData(GameLogic.Contact_person_stick);	
+				//_array_people[i]._obj.SetUserData(GameLogic.Contact_person_stick);	
+				(_array_people[i]._obj.GetUserData() as ObjectUserData).event = GameLogic.State_People_Stick;
 				_array_people[i].flicker(30);
 				_array_people[i].play("lovely");
 				add(_array_people[i]);

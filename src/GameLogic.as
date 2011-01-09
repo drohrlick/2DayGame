@@ -48,7 +48,7 @@ package
 		static public var Type_None:uint = 0;
 		static public var Type_Asteroid:uint = 1;
 		static public var Type_Boundary:uint = 2;
-		static public var Type_Chain:uint = 3;
+		//static public var Type_Chain:uint = 3;
 		static public var Type_Grouping:uint = 4;
 		static public var Type_Hook:uint = 5;
 		static public var Type_People:uint = 6;

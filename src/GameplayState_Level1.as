@@ -28,7 +28,6 @@ package
 		private var _numPeople:int = 30;
 		protected var _array_people:Array;
 		
-		protected var _line:Line;
 		
 		private var _backgroundColor:Number = 0x99FFDDEE;
 		
@@ -106,6 +105,8 @@ package
 			{
 				if (worldbody.GetUserData() != null)
 				{
+					var data:ObjectUserData = worldbody.GetUserData() as ObjectUserData;
+					
 					/////////////////////////////////////////////////
 					//If we want person to remain at hook position
 					/////////////////////////////////////////////////
@@ -114,11 +115,13 @@ package
 					//	worldbody.SetPosition(_ship._hook1._obj.GetPosition());
 					//}
 					
-					if (worldbody.GetUserData()== GameLogic.Contact_person_combine) 
+					//if (worldbody.GetUserData()== GameLogic.Contact_person_combine) 
+					if( data.state == GameLogic.State_People_Combine )
 					{
 						// ... just remove it!!
 						_world.DestroyBody(worldbody);
-						worldbody.SetUserData(GameLogic.Contact_person_kill);
+						//worldbody.SetUserData(GameLogic.Contact_person_kill);
+						data.state = GameLogic.State_People_Kill;
 						_numPeopleDied++;
 						FlxG.play(GameLogic.SndHookup);
 						
@@ -127,10 +130,12 @@ package
 						//var offset:b2Vec2 = _ship._obj.GetPosition() - worldbody.GetPosition();
 						//worldbody.SetPosition(_ship._obj.GetPosition());
 					}
-					if (worldbody.GetUserData() == GameLogic.Contact_person_oldAge)
+					//if (worldbody.GetUserData() == GameLogic.Contact_person_oldAge)
+					if( data.state == GameLogic.State_People_OldAge )
 					{
 						_world.DestroyBody(worldbody);
-						worldbody.SetUserData(GameLogic.Contact_person_kill);
+						//worldbody.SetUserData(GameLogic.Contact_person_kill);
+						data.state = GameLogic.State_People_Kill;
 						_numPeopleDied++;
 						_numPeopleDiedLonely++;
 						FlxG.play(GameLogic.SndBrokenHeart);

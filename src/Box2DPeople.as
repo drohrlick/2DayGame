@@ -79,7 +79,8 @@ package
             _obj.CreateFixture(_fixDef);
 			_obj.SetAngle(FlxU.random() * 360);
 			_obj.SetAngularVelocity(FlxU.random() * 8 - 4);
-			_obj.SetUserData(GameLogic.Contact_person_free);
+			//_obj.SetUserData(GameLogic.Contact_person_free);
+			_obj.SetUserData( new ObjectUserData(GameLogic.Type_People, GameLogic.State_People_Free) );
 			
 			var randX:int;
 			var randY:int;
@@ -133,23 +134,28 @@ package
             _obj.CreateFixture(_fixDef);
 			_obj.SetAngle(0);
 			_obj.SetAngularVelocity(0);
-			_obj.SetUserData(GameLogic.Contact_person_free);
+			//_obj.SetUserData(GameLogic.Contact_person_free);
+			_obj.SetUserData( new ObjectUserData(GameLogic.Type_People, GameLogic.State_People_Free));
 				
 			_obj.SetLinearVelocity(new b2Vec2(0, 0));
         }
 		
 		public function updateTutorial():void
 		{
-			if (_obj.GetUserData() == GameLogic.Contact_person_stick)
+			//if (_obj.GetUserData() == GameLogic.Contact_person_stick)
+			if( (_obj.GetUserData() as ObjectUserData).state == GameLogic.State_People_Stick)
 			{
 				flicker(30);
-				_obj.SetUserData(GameLogic.Contact_person_flash);
+				//_obj.SetUserData(GameLogic.Contact_person_flash);
+				(_obj.GetUserData() as ObjectUserData).state = GameLogic.State_People_Stick;
 				play( "lovely" );
 			}	
-			if (_obj.GetUserData() == GameLogic.Contact_person_flash && !flickering())
+			//if (_obj.GetUserData() == GameLogic.Contact_person_flash && !flickering())
+			if( (_obj.GetUserData() as ObjectUserData).state == GameLogic.State_People_Flash && !flickering())
 			{
 				//reset person
-				_obj.SetUserData(GameLogic.Contact_person_free);
+				//_obj.SetUserData(GameLogic.Contact_person_free);
+				(_obj.GetUserData() as ObjectUserData).state = GameLogic.State_People_Free;
 				play( "normal" );
 			}
 			
@@ -158,20 +164,25 @@ package
 		
 		override public function update():void
         {
-			if (_obj.GetUserData() == GameLogic.Contact_person_stick)
+			//if (_obj.GetUserData() == GameLogic.Contact_person_stick)
+			if( (_obj.GetUserData() as ObjectUserData).state == GameLogic.State_People_Stick )
 			{
 				flicker(30);
-				_obj.SetUserData(GameLogic.Contact_person_flash);
+				//_obj.SetUserData(GameLogic.Contact_person_flash);
+				(_obj.GetUserData() as ObjectUserData).state = GameLogic.State_People_Flash;
 				play( "lovely" );
 			}	
-			if (_obj.GetUserData() == GameLogic.Contact_person_flash && !flickering())
+			//if (_obj.GetUserData() == GameLogic.Contact_person_flash && !flickering())
+			if( (_obj.GetUserData() as ObjectUserData).state == GameLogic.State_People_Flash && !flickering())
 			{
 				//reset person
-				_obj.SetUserData(GameLogic.Contact_person_free);
+				//_obj.SetUserData(GameLogic.Contact_person_free);
+				(_obj.GetUserData() as ObjectUserData).state = GameLogic.State_People_Free;
 				play( "normal" );
 			}
 			
-			if (_obj.GetUserData() == GameLogic.Contact_person_kill)
+			//if (_obj.GetUserData() == GameLogic.Contact_person_kill)
+			if( (_obj.GetUserData() as ObjectUserData).state == GameLogic.State_People_Kill )
 			{
 				kill();
 				play( "normal" );
