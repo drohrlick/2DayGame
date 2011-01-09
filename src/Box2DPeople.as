@@ -41,10 +41,16 @@ package
             _world = w
 			
 			createBody(id);
-			if(FlxU.random() < 0.5 )
+			if (FlxU.random() < 0.5 )
+			{
 				loadGraphic(ImgM, false, false, 16, 16 );
+				this.color = 0x0099FF;
+			}
 			else
+			{
 				loadGraphic(ImgW, false, false, 16, 16 );
+				this.color = 0xFFCCFF;
+			}
 				
 			addAnimation( "normal", [0], 0 );
 			addAnimation( "lovely", [0, 1, 2, 3, 4], 5);
@@ -67,7 +73,7 @@ package
             _bodyDef.position.Set((x + (width/2)) / ratio, (y + (height/2)) / ratio);
             _bodyDef.angle = _angle * (Math.PI / 180);
             _bodyDef.type = _type
- 
+			 
             _obj = _world.CreateBody(_bodyDef);
             _obj.CreateFixture(_fixDef);
 			_obj.SetAngle(FlxU.random() * 360);
