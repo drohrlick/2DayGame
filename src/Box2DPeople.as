@@ -57,9 +57,9 @@ package
             _fixDef.restitution = _restitution;
             _fixDef.friction = _friction;                        
             _fixDef.shape = boxShape;
-			_fixDef.filter.categoryBits = GameplayState.RockMask;
-			_fixDef.filter.maskBits = GameplayState.HookMask | GameplayState.ShipMask | GameplayState.RockMask | GameplayState.WallMask;
-
+			_fixDef.filter.categoryBits = GameplayState.PersonMask;
+			_fixDef.filter.maskBits = GameplayState.HookMask | GameplayState.ShipMask | GameplayState.PersonMask | GameplayState.WallMask;
+			
             _bodyDef = new b2BodyDef();
             _bodyDef.position.Set((x + (width/2)) / ratio, (y + (height/2)) / ratio);
             _bodyDef.angle = _angle * (Math.PI / 180);
@@ -89,12 +89,33 @@ package
 		
 		override public function update():void
         {
+			if (_obj.GetUserData() == GameplayState.Contact_person_stick)
+			{
+				flicker(30);
+				_obj.SetUserData(GameplayState.Contact_person_flash);
+			}	
+			if (_obj.GetUserData() == GameplayState.Contact_person_flash && !flickering())
+			{
+				//reset person
+				_obj.SetUserData(GameplayState.Contact_person_free);
+			}
+			
+			if (_obj.GetUserData() == GameplayState.Contact_person_kill)
+			{
+				flicker(0);
+			}
+
 			x = (_obj.GetPosition().x * ratio) - width/2 ;
 			y = (_obj.GetPosition().y * ratio) - height/2;
 			angle = _obj.GetAngle() * (180 / Math.PI);
 			
 			super.update();
         }
+		
+		override public function kill():void
+		{
+		
+		}
     }
 }
  

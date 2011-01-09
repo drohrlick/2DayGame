@@ -36,9 +36,9 @@ package
 		//Other variables
 		private var _thrust:b2Vec2; 
 //		private var _maxHookThurst:Number = 0.2;
-		private var _maxHookThurst:Number = 0.1;
+		private var _maxHookThurst:Number = 0.2;
 		private var _shotTimer:Number;
-		private var _shotTimeLimit:Number = 1;
+		private var _shotTimeLimit:Number = 0.8;
 		
 		public var AttachedToShip:Boolean = true;
 		
@@ -69,7 +69,7 @@ package
             _fixDef.friction = _friction;                        
             _fixDef.shape = boxShape;
  			_fixDef.filter.categoryBits = GameplayState.HookMask;
-			_fixDef.filter.maskBits = GameplayState.RockMask;
+			_fixDef.filter.maskBits = GameplayState.PersonMask;
 
             _bodyDef = new b2BodyDef();
             _bodyDef.position.Set((x + (width/2)) / ratio, (y + (height/2)) / ratio);
@@ -116,26 +116,23 @@ package
  
 		public function Shoot(x:int, y:int):void
 		{
-			if (AttachedToShip)
-			{					
-				_obj.SetPosition(new b2Vec2(_posX, _posY));
-								
-				_thrust.SetZero();
-				_obj.SetLinearVelocity(_thrust);	//reset thrust
+			_obj.SetPosition(new b2Vec2(_posX, _posY));
+			
+			//reset thrust
+			_thrust.SetZero();
+			_obj.SetLinearVelocity(_thrust);	
 
-				_angle = FlxU.getAngle(FlxG.mouse.x - x, 
-									   FlxG.mouse.y - y);
+			_angle = FlxU.getAngle(FlxG.mouse.x - x, 
+								   FlxG.mouse.y - y);
 				
-				_angle  = (_angle / 180) * Math.PI;   //convert to radian
-				
-				_thrust.x = (Math.cos(_angle) * _maxHookThurst) - (Math.sin(_angle) * 0) + 0;
-				_thrust.y = (Math.sin(_angle) * _maxHookThurst) - (Math.cos(_angle) * 0) + 0;		
+			_angle  = (_angle / 180) * Math.PI;   //convert to radian
+								_thrust.x = (Math.cos(_angle) * _maxHookThurst) - (Math.sin(_angle) * 0) + 0;
+			_thrust.y = (Math.sin(_angle) * _maxHookThurst) - (Math.cos(_angle) * 0) + 0;		
 												
-				_obj.ApplyImpulse(_thrust, _obj.GetPosition());	
+			_obj.ApplyImpulse(_thrust, _obj.GetPosition());	
 							
-				_shotTimer = _shotTimeLimit;	
-				AttachedToShip = false;
-			}
+			_shotTimer = _shotTimeLimit;	
+			AttachedToShip = false;
 		}
     }
 }

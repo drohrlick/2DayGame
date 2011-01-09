@@ -78,7 +78,7 @@ package
             _fixDef.friction = _friction;                        
             _fixDef.shape = boxShape;
 			_fixDef.filter.categoryBits = GameplayState.ShipMask;
-			_fixDef.filter.maskBits = GameplayState.RockMask | GameplayState.WallMask;
+			_fixDef.filter.maskBits = GameplayState.PersonMask | GameplayState.WallMask;
  
             _bodyDef = new b2BodyDef();
             _bodyDef.position.Set((x + (width/2)) / ratio, (y + (height/2)) / ratio);
@@ -168,17 +168,11 @@ package
 		private function UpdateHooks():void
 		{	
 			if (_hook1.AttachedToShip)
-				_hook1.UpdateAttachedHook(_obj.GetPosition(), _obj.GetAngle());
-			//if (_hook2.AttachedToShip)
-				//_hook2.UpdateAttachedHook(_obj.GetPosition(), _obj.GetAngle());
-			
-			if (FlxG.mouse.justPressed())
 			{
-				//if hook1 is free, fire it. otherwise, shoot hook2
-				//if(_hook1._obj.GetUserData() == GameplayState.Contact_hook_free)
+				_hook1.UpdateAttachedHook(_obj.GetPosition(), _obj.GetAngle());
+			
+				if (FlxG.mouse.justPressed())
 					_hook1.Shoot(x + 16, y + 16);
-				//else
-				//	_hook2.Shoot(x + 16, y + 16);
 			}
 		}
 		

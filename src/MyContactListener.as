@@ -23,7 +23,9 @@ package {
 			//}
 		//}
 		private var reverseImpulse:b2Vec2;
-		private var impulseScale:Number = 0.05;
+		private var impulseScale:Number = 0.02;
+		private var combineOffset:b2Vec2 = new b2Vec2(2, 0);
+		private var filter:b2FilterData;
 		
 		override public function PreSolve(contact:b2Contact, oldManifold:b2Manifold):void 
 		{
@@ -34,61 +36,49 @@ package {
 			//var person_position:b2Vec2;
 			
 			if ((fixtureA.GetBody().GetUserData() == GameplayState.Contact_person_free && fixtureB.GetBody().GetUserData() == GameplayState.Contact_hook_free) ||
-				(fixtureA.GetBody().GetUserData()== GameplayState.Contact_hook_free && fixtureB.GetBody().GetUserData() == GameplayState.Contact_person_free))
+				(fixtureA.GetBody().GetUserData() == GameplayState.Contact_hook_free && fixtureB.GetBody().GetUserData() == GameplayState.Contact_person_free))
+			{
+				//Handle hook and person hit.
+				
+				switch(fixtureA.GetBody().GetUserData())
 				{
-					switch(fixtureA.GetBody().GetUserData())
-					{
-						case GameplayState.Contact_person_free:
-							//person_position = fixtureA.GetBody().GetPosition();
+					case GameplayState.Contact_person_free:
+						//person_position = fixtureA.GetBody().GetPosition();
 							
-							fixtureA.GetBody().SetUserData(GameplayState.Contact_person_stick);
-							fixtureB.GetBody().SetUserData(GameplayState.Contact_hook_stick);
-							
-							reverseImpulse = fixtureB.GetBody().GetLinearVelocity().GetNegative();
-							reverseImpulse.x *= impulseScale;
-							reverseImpulse.y *= impulseScale;
-							fixtureA.GetBody().ApplyImpulse( reverseImpulse, fixtureA.GetBody().GetPosition());
-							break;
-						case GameplayState.Contact_hook_free:
-							//person_position = fixtureB.GetBody().GetPosition();
+						fixtureA.GetBody().SetUserData(GameplayState.Contact_person_stick);
+						fixtureB.GetBody().SetUserData(GameplayState.Contact_hook_stick);
 						
-							fixtureA.GetBody().SetUserData(GameplayState.Contact_hook_stick);
-							fixtureB.GetBody().SetUserData(GameplayState.Contact_person_stick);
-							
-							reverseImpulse = fixtureA.GetBody().GetLinearVelocity().GetNegative();
-							reverseImpulse.x *= impulseScale;
-							reverseImpulse.y *= impulseScale;
-							fixtureB.GetBody().ApplyImpulse( reverseImpulse, fixtureB.GetBody().GetPosition());
+						//reverseImpulse = fixtureB.GetBody().GetLinearVelocity().GetNegative();
+						//reverseImpulse.x *= impulseScale;
+						//reverseImpulse.y *= impulseScale;						
+						//fixtureA.GetBody().ApplyImpulse( reverseImpulse, fixtureA.GetBody().GetPosition());
+						
+						break;
+					case GameplayState.Contact_hook_free:
+						//person_position = fixtureB.GetBody().GetPosition();
+						
+						fixtureA.GetBody().SetUserData(GameplayState.Contact_hook_stick);
+						fixtureB.GetBody().SetUserData(GameplayState.Contact_person_stick);
+						
+						//reverseImpulse = fixtureA.GetBody().GetLinearVelocity().GetNegative();
+						//reverseImpulse.x *= impulseScale;
+						//reverseImpulse.y *= impulseScale;
+						//fixtureB.GetBody().ApplyImpulse( reverseImpulse, fixtureB.GetBody().GetPosition());
 
-							break;
-					}
+						break;
 				}
-			// checking if the collision bodies are the ones marked as "middle" and "player"
-			//if ((fixtureA.GetBody().GetUserData() == "middle" && fixtureB.GetBody().GetUserData() == "player") || 
-				//(fixtureA.GetBody().GetUserData() == "player" && fixtureB.GetBody().GetUserData() == "middle")) 
-			//{
-				// determining if the fixtureA represents the platform ("middle") or the player
-				//switch (fixtureA.GetBody().GetUserData()) 
-				//{
-					//case "middle" :
-						// determining y positions
-						//player_y_position=fixtureB.GetBody().GetPosition().y*30;
-						//platform_y_position=fixtureA.GetBody().GetPosition().y*30;
-						//break;
-					//case "player" :
-						// determining y positions
-						//player_y_position=fixtureA.GetBody().GetPosition().y*30;
-						//platform_y_position=fixtureB.GetBody().GetPosition().y*30;
-						//break;
-				//}
-				// checking distance between bodies
-				//var distance = player_y_position-platform_y_position;
-				// if the distance is greater than player radius + half of the platform height...
-				//if (distance>-14.5) {
-					// don't manage the contact
-					//contact.SetEnabled(false);
-				//}
-			//}
+			}
+			if (fixtureA.GetBody().GetUserData() == GameplayState.Contact_person_flash && fixtureB.GetBody().GetUserData() == GameplayState.Contact_person_flash)
+			{
+				//Handle flash person to flash person hit
+				fixtureA.GetBody().SetUserData(GameplayState.Contact_person_combine);
+				//fixtureA.GetBody().ApplyTorque(2);
+				fixtureB.GetBody().SetUserData(GameplayState.Contact_person_combine);
+				//fixtureB.GetBody().ApplyTorque(2);
+				//combineOffset = fixtureA.GetBody().GetPosition();
+				//combineOffset.x += 5;
+				//fixtureB.GetBody().SetPosition(combineOffset);
+			}
 		}
 	}
 }

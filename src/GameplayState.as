@@ -11,12 +11,14 @@ package
 	{
 		static public var ShipMask:uint = 0x0002;
 		static public var HookMask:uint = 0x0004;
-		static public var RockMask:uint = 0x0008;
+		static public var PersonMask:uint = 0x0008;
 		static public var WallMask:uint = 0x0010;
 		
-		static public var Contact_person_free:String = new String("Person_Free");
-		static public var Contact_person_stick:String = new String("Person_Sticking");
-		static public var Contact_person_combine:String = new String("Person_Combined");
+		static public var Contact_person_free:String = new String("Person_Free");			//person free roaming
+		static public var Contact_person_stick:String = new String("Person_Sticking");		//person just stuck by hook
+		static public var Contact_person_flash:String = new String("Person_Flashing");		//person flashing and ready to combine
+		static public var Contact_person_combine:String = new String("Person_Combined");	//person combined with another
+		static public var Contact_person_kill:String = new String("Person_Killed");			//remove person once combined.
 		static public var Contact_hook_free:String = new String("Hook_Free");
 		static public var Contact_hook_stick:String = new String("Hook_Sticking");
 		static public var Contact_player:String = new String("Player");
@@ -35,12 +37,9 @@ package
 		protected var _wallRight:Box2DBoundary;
 
 		protected var _ship:Box2DShip;
-
 		
-		private var _numAsteroids:int = 40;
-		protected var _array_asteroids:Array;
-		
-		private var _numPeople:int = 20;
+		private var _numPeople:int = 10;
+		private var _numPeopleLoved:int = 0;
 		protected var _array_people:Array;
 		
 		protected var _line:Line;
@@ -58,8 +57,6 @@ package
 		
 		private function SetupWorld():void
 		{
-			
-			
 			var gravity:b2Vec2 = new b2Vec2(0, 0);
 			_world = new b2World(gravity, true);
 			
@@ -136,10 +133,12 @@ package
 			{
 				if (worldbody.GetUserData() != null)
 				{
-					if (worldbody.GetUserData()== GameplayState.Contact_person_stick) 
+					if (worldbody.GetUserData()== GameplayState.Contact_person_combine) 
 					{
 						// ... just remove it!!
-						//_world.DestroyBody(worldbody);
+						_world.DestroyBody(worldbody);
+						worldbody.SetUserData(GameplayState.Contact_person_kill);
+						_numPeopleLoved++;
 					
 						//make body fly back toward ship pos.
 						//_ship._personHolder1 = worldbody.GetPosition();
@@ -149,10 +148,12 @@ package
 				}
 			}
 			
+			if (_numPeopleLoved == _numPeople)
+				FlxG.state = new EndMenuState();
+			
 			super.update();	
 									
-			//_frameCounter++;
-			//_frameCounterTxt.text = _frameCounter.toString();
+
 		}
 	}
 }
