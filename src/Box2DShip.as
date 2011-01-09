@@ -17,6 +17,7 @@ package
         public var _bodyDef:b2BodyDef
         public var _obj:b2Body;
 		public var _hook1:Box2DHook;
+		public var _chain1:Box2DChain;
  
         private var _world:b2World;
  
@@ -50,6 +51,9 @@ package
 			_hook1 = new Box2DHook(0, 0, 8, 2, _world);
 			_hook1.createBody();
 			_hook1.loadGraphic(_hook1.ImgHook, false, false, 8, 2);
+			
+			_chain1 = new Box2DChain( _world );
+			
 		}
  
 		        public function createBody():void
@@ -89,6 +93,14 @@ package
 						
 			//update hook
 			UpdateHook();
+			
+			if (!_hook1.AttachedToShip) 
+			{
+				_chain1.SetPositions( new b2Vec2(x + 16, y + 16), new b2Vec2(_hook1.x, _hook1.y) );
+				//_chain1.UpdateLinks();
+				_chain1.SetVisible();
+			}
+			else _chain1.SetInvisible();
             
 			super.update();
         }
@@ -151,7 +163,7 @@ package
 		
 		private function UpdateHook():void
 		{	
-			if (_hook1.AttactchedToShip)
+			if (_hook1.AttachedToShip)
 			{	
 				var _pos:b2Vec2 = _obj.GetPosition();
 				_angle = _obj.GetAngle();

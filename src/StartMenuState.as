@@ -18,6 +18,8 @@ package
 		
 		override public function create():void
 		{
+			CreateGameObjects();
+			
 			//A couple of simple text fields
 			var t:FlxText;
 			t = new FlxText(0,FlxG.height/2-100,FlxG.width,"Loveroids");
@@ -29,8 +31,6 @@ package
 			add(t);
 			
 			FlxState.bgColor = _backgroundColor;
-			
-			CreateGameObjects();
 			
 			FlxG.mouse.show();		
 		}
