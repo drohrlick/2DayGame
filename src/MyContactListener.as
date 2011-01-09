@@ -1,4 +1,5 @@
 package {
+	import org.flixel.*;
 	import Box2D.Dynamics.*;
 	import Box2D.Collision.*;
 	import Box2D.Collision.Shapes.*;
@@ -39,7 +40,6 @@ package {
 				(fixtureA.GetBody().GetUserData() == GameplayState.Contact_hook_free && fixtureB.GetBody().GetUserData() == GameplayState.Contact_person_free))
 			{
 				//Handle hook and person hit.
-				
 				switch(fixtureA.GetBody().GetUserData())
 				{
 					case GameplayState.Contact_person_free:

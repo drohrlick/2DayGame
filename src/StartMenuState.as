@@ -9,6 +9,9 @@ package
 	
 	public class StartMenuState extends FlxState
 	{
+		[Embed(source = "music/Menu.mp3")] private var SndMainMusic:Class;
+		[Embed(source = "sfx/menu_in.mp3")] private var SndMenuIn:Class;		
+		
 		private var _backgroundColor:Number = 0xff783629;
 		
 		protected var _world:b2World;
@@ -19,6 +22,8 @@ package
 		override public function create():void
 		{
 			CreateGameObjects();
+			
+			FlxG.playMusic(SndMainMusic);
 			
 			//A couple of simple text fields
 			var t:FlxText;
@@ -73,8 +78,11 @@ package
 			}
 			
 			//Switch to play state if the mouse is pressed
-			if(FlxG.mouse.justPressed())
+			if (FlxG.mouse.justPressed())
+			{
+				FlxG.play(SndMenuIn);
 				FlxG.state = new GameplayState();
+			}
 		}
 	}
 }

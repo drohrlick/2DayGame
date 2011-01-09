@@ -97,6 +97,9 @@ package
 				_shotTimer -= FlxG.elapsed;
 				if (_shotTimer < 0 || _obj.GetUserData() == GameplayState.Contact_hook_stick)
 				{
+					if (_obj.GetUserData() == GameplayState.Contact_hook_stick)
+						FlxG.play(GameplayState.SndCombine);
+					
 					//reset hook runs out of time or hits something
 					AttachedToShip = true;
 					_obj.SetUserData(GameplayState.Contact_hook_free);
@@ -116,6 +119,7 @@ package
  
 		public function Shoot(x:int, y:int):void
 		{
+			FlxG.play(GameplayState.SndShoot);
 			_obj.SetPosition(new b2Vec2(_posX, _posY));
 			
 			//reset thrust

@@ -9,6 +9,8 @@ package
 	
 	public class EndMenuState extends FlxState
 	{
+		[Embed(source = "sfx/menu_in.mp3")] private var SndMenuIn:Class;		
+
 		private var _backgroundColor:Number = 0xff783629;
 		
 		private var _timer:Number = 3;
@@ -47,8 +49,11 @@ package
 				}
 				
 				//Switch to play state if the mouse is pressed
-				if(FlxG.mouse.justPressed())
+				if (FlxG.mouse.justPressed())
+				{
+					FlxG.play(SndMenuIn);
 					FlxG.state = new StartMenuState();
+				}
 			}
 		}
 	}
