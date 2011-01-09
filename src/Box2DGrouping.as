@@ -124,7 +124,7 @@ package
 			_obj.SetUserData( new ObjectUserData(GameLogic.Type_Grouping) );
 			
 			 //_obj.CreateFixture(_fixDef);
-			 trace( true );
+			 //trace( true );
         }
 		
 		public function addPerson( person:Box2DPeople ):void
