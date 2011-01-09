@@ -22,7 +22,7 @@ package
 		
 		protected var _line:Line;
 		
-		private var _numAsteroids:int = 20;
+		private var _numAsteroids:int = 0;
 		private var _backgroundColor:Number = 0xDDDDDDDD;
 		
 		override public function create():void
@@ -73,8 +73,6 @@ package
 			_ship.loadGraphic(_ship.Img, false, false,32,32);
 			add(_ship);
 			add(_ship._hook1);
-			
-
 		}
 		
 				//The main game loop function
@@ -84,7 +82,7 @@ package
 			
 			_world.Step(FlxG.elapsed, 10, 10);
 			super.update();	
-						
+									
 			//_frameCounter++;
 			//_frameCounterTxt.text = _frameCounter.toString();
 		}

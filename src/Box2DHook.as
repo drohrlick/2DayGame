@@ -34,9 +34,10 @@ package
 		
 		//Other variables
 		private var _thrust:b2Vec2; 
-		private var _maxVelocity:int = 2;
-		private var _shootStartTime:Number;
-		
+		private var _maxHookThurst:Number = 0.1;
+		private var _shotTimer:Number;
+		private var _shotTimeLimit:Number = 1;
+
 		public var AttactchedToShip:Boolean = true;
  
         public function Box2DHook(X:Number, Y:Number, Width:Number, Height:Number, w:b2World):void
@@ -83,10 +84,15 @@ package
 			{
 				x = (_obj.GetPosition().x * ratio) - width/2 ;
 				y = (_obj.GetPosition().y * ratio) - height / 2;
+								
+				
+				_shotTimer -= FlxG.elapsed;
+				if (_shotTimer < 0)
+					AttactchedToShip = true;
+
 			}
 
-            angle = _angle * (180 / Math.PI);
-            
+            angle = _angle * (180 / Math.PI);            
 			super.update();
         }
 		
@@ -99,18 +105,21 @@ package
  
 		public function Shoot():void
 		{
-			_obj.SetPosition(new b2Vec2(_posX, _posY));
-
-			_thrust.x = 0; _thrust.y = 0;
-			_obj.ApplyImpulse(_thrust, _obj.GetPosition());
-			
-			_thrust.x = (Math.cos(_angle) * 0.05) - (Math.sin(_angle) * 0) + 0;
-			_thrust.y = (Math.sin(_angle) * 0.05) - (Math.cos(_angle) * 0) + 0;		
-									
-			AttactchedToShip = false;
-			
-			_obj.ApplyImpulse(_thrust, _obj.GetPosition());	
-			
+			if (AttactchedToShip)
+			{
+				_obj.SetPosition(new b2Vec2(_posX, _posY));
+				
+				_thrust.SetZero();
+				_obj.SetLinearVelocity(_thrust);	//reset thrust
+							
+				_thrust.x = (Math.cos(_angle) * _maxHookThurst) - (Math.sin(_angle) * 0) + 0;
+				_thrust.y = (Math.sin(_angle) * _maxHookThurst) - (Math.cos(_angle) * 0) + 0;		
+												
+				_obj.ApplyImpulse(_thrust, _obj.GetPosition());	
+							
+				_shotTimer = _shotTimeLimit;	
+				AttactchedToShip = false;
+			}
 		}
     }
 }
