@@ -80,6 +80,7 @@ package
 				(_array_people[i]._obj.GetUserData() as ObjectUserData).event = GameLogic.State_People_Stick;
 				_array_people[i].flicker(30);
 				_array_people[i].play("lovely");
+				_array_people[i]._obj.SetAngle( -Math.PI / 2 );
 				add(_array_people[i]);
 			}
 			

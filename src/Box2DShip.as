@@ -60,7 +60,7 @@ package
 			loadGraphic(Img, false, false, 32, 32);
 			
 			_hook1 = new Box2DHook(0, 0, 0, 8, 2, _world);
-			_hook1.loadGraphic(_hook1.ImgHook, false, false, 8, 2);
+			_hook1.loadGraphic(_hook1.ImgHook, false, false, 9, 9);
 			
 			//_hook2 = new Box2DHook(0, 0, 0, 8, 2, _world);
 			//_hook2.loadGraphic(_hook2.ImgHook, false, false, 8, 2);

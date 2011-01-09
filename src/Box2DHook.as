@@ -116,7 +116,7 @@ package
 				
 				//non-sticky hooks
 				_shotTimer -= FlxG.elapsed;
-				if (_shotTimer < 0 || (_obj.GetUserData() as ObjectUserData).state == GameLogic.State_Hook_Stick)
+				if (_shotTimer < 0)// || (_obj.GetUserData() as ObjectUserData).state == GameLogic.State_Hook_Stick)
 				{
 					//if (_obj.GetUserData() == GameLogic.Contact_hook_stick)
 					if((_obj.GetUserData() as ObjectUserData).state == GameLogic.State_Hook_Stick)
