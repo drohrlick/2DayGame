@@ -114,6 +114,7 @@ package
 		
 		override public function kill():void
 		{
+			FlxG.play(GameplayState.SndHookup);
 			this.visible = false;
 			this.destroy();
 			super.kill();

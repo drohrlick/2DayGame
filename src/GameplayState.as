@@ -12,7 +12,8 @@ package
 		[Embed(source = "music/Gameplay1.mp3")] static public var SndMainMusic:Class;
 		[Embed(source = "sfx/laser_shot2.mp3")] static public var SndShoot:Class;		
 		[Embed(source = "sfx/laser_grab.mp3")] static public var SndCombine:Class;		
-
+		[Embed(source = "sfx/Hookup.mp3")] static public var SndHookup:Class;		
+		
 		static public var ShipMask:uint = 0x0002;
 		static public var HookMask:uint = 0x0004;
 		static public var PersonMask:uint = 0x0008;
