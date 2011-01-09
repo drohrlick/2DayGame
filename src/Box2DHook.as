@@ -69,7 +69,7 @@ package
             _fixDef.friction = _friction;                        
             _fixDef.shape = boxShape;
  			_fixDef.filter.categoryBits = GameplayState.HookMask;
-			_fixDef.filter.maskBits = GameplayState.PersonMask;
+			_fixDef.filter.maskBits = GameplayState.PersonMask | GameplayState.RockMask;
 
             _bodyDef = new b2BodyDef();
             _bodyDef.position.Set((x + (width/2)) / ratio, (y + (height/2)) / ratio);

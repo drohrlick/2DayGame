@@ -121,10 +121,12 @@ package
 			_obj.SetActive(false);
 			
 			 //_obj.CreateFixture(_fixDef);
+			 trace( true );
         }
 		
 		public function addPerson( person:Box2DPeople ):void
 		{
+			trace( members.length);
 			// if first set angle and position to the added person
 			if ( members.length <= 0 )
 			{
