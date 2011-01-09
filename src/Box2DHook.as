@@ -1,5 +1,6 @@
 package
 {
+	import Box2D.Dynamics.Contacts.b2Contact;
     import org.flixel.*;
  
     import Box2D.Dynamics.*;
@@ -34,6 +35,7 @@ package
 		
 		//Other variables
 		private var _thrust:b2Vec2; 
+//		private var _maxHookThurst:Number = 0.2;
 		private var _maxHookThurst:Number = 0.1;
 		private var _shotTimer:Number;
 		private var _shotTimeLimit:Number = 1;
@@ -93,7 +95,6 @@ package
 				_shotTimer -= FlxG.elapsed;
 				if (_shotTimer < 0)
 					AttachedToShip = true;
-
 			}
 
             angle = _angle * (180 / Math.PI);            

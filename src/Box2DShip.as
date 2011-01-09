@@ -23,7 +23,7 @@ package
  
         //Physics params default value
 
-        public var _friction:Number = 0.1;
+        public var _friction:Number = 0.2;
         public var _restitution:Number = 0.3;
         public var _density:Number = 0.7;
  
@@ -33,7 +33,7 @@ package
         public var _type:uint = b2Body.b2_dynamicBody;
  
 		private var _maxRotVelocity:int = 5;
-		private var _maxThrust:Number = 0.2;
+		private var _maxThrust:Number = 0.5;
 		private var _thrust:b2Vec2;
 		private var _rotation:int;
  
