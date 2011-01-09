@@ -79,6 +79,12 @@ package {
 				//combineOffset.x += 5;
 				//fixtureB.GetBody().SetPosition(combineOffset);
 			}
+			
+			if (fixtureA.GetBody().GetUserData() == GameplayState.Contact_player)
+				fixtureA.GetBody().SetUserData(GameplayState.Contact_player_collision);
+			if (fixtureB.GetBody().GetUserData() == GameplayState.Contact_player)
+				fixtureB.GetBody().SetUserData(GameplayState.Contact_player_collision);
+
 		}
 	}
 }

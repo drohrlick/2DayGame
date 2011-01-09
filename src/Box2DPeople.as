@@ -43,11 +43,13 @@ package
             _world = w
 			
 			createBody(id);
-			if(FlxU.random() < 0.5 ) {
+			if (FlxU.random() < 0.5 )
+			{
 				loadGraphic(ImgM, false, false, 16, 16 );
 				_sex = true;
 			}
-			else {
+			else
+			{
 				loadGraphic(ImgW, false, false, 16, 16 );
 				_sex = false;
 			}
@@ -73,7 +75,7 @@ package
             _bodyDef.position.Set((x + (width/2)) / ratio, (y + (height/2)) / ratio);
             _bodyDef.angle = _angle * (Math.PI / 180);
             _bodyDef.type = _type
- 
+			 
             _obj = _world.CreateBody(_bodyDef);
             _obj.CreateFixture(_fixDef);
 			_obj.SetAngle(FlxU.random() * 360);
@@ -100,14 +102,14 @@ package
         {
 			if (_obj.GetUserData() == GameplayState.Contact_person_stick)
 			{
-				flicker(30);
+				flicker(20);
 				_obj.SetUserData(GameplayState.Contact_person_flash);
 				play( "lovely" );
 			}	
 			if (_obj.GetUserData() == GameplayState.Contact_person_flash && !flickering())
 			{
-				//reset person
-				_obj.SetUserData(GameplayState.Contact_person_free);
+				//ran out of time. die of old age
+				_obj.SetUserData(GameplayState.Contact_person_oldAge);
 				play( "normal" );
 			}
 			
@@ -121,12 +123,27 @@ package
 			y = (_obj.GetPosition().y * ratio) - height/2;
 			angle = _obj.GetAngle() * (180 / Math.PI);
 			
+			///////////////////////////////////////////////////////////
+			//If we want persons to remain still during hook
+			///////////////////////////////////////////////////////////
+			//if (_obj.GetUserData() == GameplayState.Contact_person_stick)
+			//{
+				//flicker(30);
+				//_obj.SetUserData(GameplayState.Contact_person_flash);
+				//play( "lovely" );
+			//}
+			//else
+			//{
+				//x = (_obj.GetPosition().x * ratio) - width/2 ;
+				//y = (_obj.GetPosition().y * ratio) - height/2;
+				//angle = _obj.GetAngle() * (180 / Math.PI);
+			//}
+			
 			super.update();
         }
 		
 		override public function kill():void
 		{
-			FlxG.play(GameplayState.SndHookup);
 			this.visible = false;
 			this.destroy();
 			super.kill();

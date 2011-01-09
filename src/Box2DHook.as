@@ -90,17 +90,36 @@ package
 			}
 			else 
 			{
+				///////////////////////////////////////////////////////////
+				//Sticky hooks that remain in their collision position
+				///////////////////////////////////////////////////////////
+				//if (_obj.GetUserData() == GameplayState.Contact_hook_stick)
+				//{
+					//stand still
+				//}
+				//else
+				//{
+					//x = (_obj.GetPosition().x * ratio) - width/2 ;
+					//y = (_obj.GetPosition().y * ratio) - height / 2;
+				//}
+									
+				//_shotTimer -= FlxG.elapsed;	
+				//if (_shotTimer < 0 && _obj.GetUserData() == GameplayState.Contact_hook_free)
+				//{				
+				//	AttachedToShip = true;
+				//}
+				
 				x = (_obj.GetPosition().x * ratio) - width/2 ;
 				y = (_obj.GetPosition().y * ratio) - height / 2;
-								
 				
+				//non-sticky hooks
 				_shotTimer -= FlxG.elapsed;
 				if (_shotTimer < 0 || _obj.GetUserData() == GameplayState.Contact_hook_stick)
 				{
 					if (_obj.GetUserData() == GameplayState.Contact_hook_stick)
 						FlxG.play(GameplayState.SndCombine);
 					
-					//reset hook runs out of time or hits something
+					//reset hook when it runs out of time or hits something
 					AttachedToShip = true;
 					_obj.SetUserData(GameplayState.Contact_hook_free);
 				}

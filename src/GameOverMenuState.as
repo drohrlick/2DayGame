@@ -11,7 +11,7 @@ package
 	{
 		[Embed(source = "sfx/menu_in.mp3")] private var SndMenuIn:Class;		
 
-		private var _backgroundColor:Number = 0xff783629;
+		private var _backgroundColor:Number = 0x00000000;
 		
 		private var _timer:Number = 3;
 		private var _displayTip:Boolean = false;

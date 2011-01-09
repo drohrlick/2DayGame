@@ -7,7 +7,7 @@ package
 	import Box2D.Collision.Shapes.*;
 	import Box2D.Common.Math.*;
 	
-	public class EndMenuState extends FlxState
+	public class HappyEndMenuState extends FlxState
 	{
 		[Embed(source = "sfx/menu_in.mp3")] private var SndMenuIn:Class;		
 
