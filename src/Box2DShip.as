@@ -9,7 +9,7 @@ package
  
     public class Box2DShip extends FlxSprite
     {
-		[Embed(source = "sprites/shipA_8frames.png")] public var Img:Class;	
+		[Embed(source = "sprites/shipA_8frames90.png")] public var Img:Class;	
 
         private var ratio:Number = 30;
  
@@ -17,7 +17,6 @@ package
         public var _bodyDef:b2BodyDef
         public var _obj:b2Body;
 		public var _hook1:Box2DHook;
-
  
         private var _world:b2World;
  
@@ -32,6 +31,7 @@ package
         public var _type:uint = b2Body.b2_dynamicBody;
  
 		private var _maxVelocity:int = 5;
+		private var _maxThrust:Number = 0.2;
 		private var _thrust:b2Vec2;
 		private var _rotation:int;
  
@@ -64,15 +64,15 @@ package
 			{
 				_angle = _obj.GetAngle();
 				_pos = _obj.GetPosition();
-				_thrust.x = (Math.cos(_angle) * 0.5) - (Math.sin(_angle) * 0) + 0;
-				_thrust.y = (Math.sin(_angle) * 0.5) - (Math.cos(_angle) * 0) + 0;
+				_thrust.x = (Math.cos(_angle) * _maxThrust) - (Math.sin(_angle) * 0) + 0;
+				_thrust.y = (Math.sin(_angle) * _maxThrust) - (Math.cos(_angle) * 0) + 0;
 			}
 			if (FlxG.keys.S)
 			{
 				_angle = _obj.GetAngle();
 				_pos = _obj.GetPosition();
-				_thrust.x = (Math.cos(_angle) * -0.5) - (Math.sin(_angle) * 0) + 0;
-				_thrust.y = (Math.sin(_angle) * -0.5) - (Math.cos(_angle) * 0) + 0;		
+				_thrust.x = (Math.cos(_angle) * -_maxThrust) - (Math.sin(_angle) * 0) + 0;
+				_thrust.y = (Math.sin(_angle) * -_maxThrust) - (Math.cos(_angle) * 0) + 0;		
 			}
 			
 			_obj.ApplyImpulse(_thrust, _obj.GetPosition());
@@ -89,8 +89,16 @@ package
 			
             angle = _obj.GetAngle() * (180 / Math.PI);
 			
-			frame = ((Math.abs(angle) % 360) + 22.5) / 45;
-			
+			if (angle < 0)
+			{
+				angle += 360;
+				_obj.SetAngle( angle / 180 * Math.PI );
+			}
+			if (angle >= 360)
+				angle %= 360;
+							
+			frame = (angle + 22.5) / 45;
+						
 			//update hook
 			UpdateHook();
             
@@ -107,6 +115,8 @@ package
             _fixDef.restitution = _restitution;
             _fixDef.friction = _friction;                        
             _fixDef.shape = boxShape;
+			_fixDef.filter.categoryBits = GameplayState.ShipMask;
+			_fixDef.filter.maskBits = GameplayState.RockMask;
  
             _bodyDef = new b2BodyDef();
             _bodyDef.position.Set((x + (width/2)) / ratio, (y + (height/2)) / ratio);
@@ -119,8 +129,12 @@ package
 		
 		private function UpdateHook():void
 		{	
-			if(_hook1.AttactchedToShip)
-				_hook1.UpdateHook(_obj.GetPosition(), _obj.GetAngle());
+			if (_hook1.AttactchedToShip)
+			{	
+				var _pos:b2Vec2 = _obj.GetPosition();
+				_angle = _obj.GetAngle();
+				_hook1.UpdateHook(_pos, _angle);
+			}
 			
 			if (FlxG.mouse.justPressed())
 				_hook1.Shoot();

@@ -4,6 +4,8 @@ package
 	
 	public class StartMenuState extends FlxState
 	{
+		private var _backgroundColor:Number = 0xff783629;
+		
 		override public function create():void
 		{
 			//A couple of simple text fields
@@ -16,9 +18,10 @@ package
 			t.alignment = "center";
 			add(t);
 			
-			FlxState.bgColor = 0xff783629;
+			FlxState.bgColor = _backgroundColor;
 			
-			FlxG.mouse.show();		}
+			FlxG.mouse.show();		
+		}
 		
 		//The main game loop function
 		override public function update():void

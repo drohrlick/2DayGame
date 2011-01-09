@@ -9,7 +9,7 @@ package
  
     public class Box2DAsteroid extends FlxSprite
     {
-		[Embed(source = "sprites/asteroid.png")] private var Img:Class;	
+		[Embed(source = "sprites/asteroid.png")] public var Img:Class;	
 
         private var ratio:Number = 30;
  
@@ -34,14 +34,10 @@ package
         public function Box2DAsteroid(X:Number, Y:Number, Width:Number, Height:Number, w:b2World):void
         {
             super(X,Y);
- 
+ 			
             width = Width;
             height = Height;
             _world = w
-			
-			//Set the asteroids a-rotatin' at a random speed (looks neat)
-			//angularVelocity = FlxU.random()*120 - 60;
-			//angle = FlxU.random() * 360;
 		}
  
         override public function update():void
@@ -49,7 +45,7 @@ package
             x = (_obj.GetPosition().x * ratio) - width/2 ;
             y = (_obj.GetPosition().y * ratio) - height/2;
             angle = _obj.GetAngle() * (180 / Math.PI);
-            
+            			
 			super.update();
         }
  
@@ -63,6 +59,9 @@ package
             _fixDef.restitution = _restitution;
             _fixDef.friction = _friction;                        
             _fixDef.shape = boxShape;
+			_fixDef.filter.categoryBits = GameplayState.RockMask;
+			_fixDef.filter.maskBits = GameplayState.HookMask | GameplayState.ShipMask;
+
  
             _bodyDef = new b2BodyDef();
             _bodyDef.position.Set((x + (width/2)) / ratio, (y + (height/2)) / ratio);
@@ -74,7 +73,6 @@ package
 			_obj.SetAngle(FlxU.random() * 360);
 			_obj.SetAngularVelocity(FlxU.random() * 8 - 4);
 			
-			var randLinearVelo:b2Vec2;
 			var randX:int;
 			var randY:int;
 			
@@ -87,10 +85,8 @@ package
 				randY = FlxU.random() * _maxVelocity;
 			else
 				randY = FlxU.random() * -_maxVelocity;
-			
-			randLinearVelo = new b2Vec2(randX, randY);
 				
-			_obj.SetLinearVelocity(randLinearVelo);
+			_obj.SetLinearVelocity(new b2Vec2(randX, randY));
         }
     }
 }

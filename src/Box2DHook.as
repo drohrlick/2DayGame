@@ -40,7 +40,7 @@ package
         public function Box2DHook(X:Number, Y:Number, Width:Number, Height:Number, w:b2World):void
         {
             super(X, Y);
-			 
+						
             width = Width;
             height = Height;
             _world = w
@@ -48,7 +48,7 @@ package
 			_thrust = new b2Vec2(0, 0);
 		}
 		
-		        public function createBody():void
+		public function createBody():void
         {            
             var boxShape:b2PolygonShape = new b2PolygonShape();
             boxShape.SetAsBox((width/2) / ratio, (height/2) /ratio);
@@ -58,7 +58,9 @@ package
             _fixDef.restitution = _restitution;
             _fixDef.friction = _friction;                        
             _fixDef.shape = boxShape;
- 
+ 			_fixDef.filter.categoryBits = GameplayState.HookMask;
+			_fixDef.filter.maskBits = GameplayState.RockMask;
+
             _bodyDef = new b2BodyDef();
             _bodyDef.position.Set((x + (width/2)) / ratio, (y + (height/2)) / ratio);
             _bodyDef.angle = _angle * (Math.PI / 180);
@@ -70,13 +72,17 @@ package
  
         override public function update():void
         {
-            x = (_posX * ratio) - width/2 ;
-            y = (_posY * ratio) - height / 2;
-			
-			_obj.ApplyForce(_thrust, _obj.GetPosition());	
-      
-			//x = (_obj.GetPosition().x * ratio) - width/2 ;
-            //y = (_obj.GetPosition().y * ratio) - height/2;
+			if (AttactchedToShip)
+			{
+				x = (_posX * ratio) - width/2 ;
+				y = (_posY * ratio) - height/2;
+			}
+			else 
+			{
+				x = (_obj.GetPosition().x * ratio) - width/2 ;
+				y = (_obj.GetPosition().y * ratio) - height / 2;
+			}
+
             angle = _angle * (180 / Math.PI);
             
 			super.update();
@@ -91,11 +97,19 @@ package
  
 		public function Shoot():void
 		{
-			_angle = _obj.GetAngle();
-			_thrust.x = (Math.cos(_angle) * -0.5) - (Math.sin(_angle) * 0) + 0;
-			_thrust.y = (Math.sin(_angle) * -0.5) - (Math.cos(_angle) * 0) + 0;		
+			_obj.SetPosition(new b2Vec2(_posX, _posY));
+
+			_thrust.x = 0; _thrust.y = 0;
+			_obj.ApplyImpulse(_thrust, _obj.GetPosition());
 			
+			_angle = _obj.GetAngle();
+			_thrust.x = (Math.cos(_angle) * 0.05) - (Math.sin(_angle) * 0) + 0;
+			_thrust.y = (Math.sin(_angle) * 0.05) - (Math.cos(_angle) * 0) + 0;		
+						
 			AttactchedToShip = false;
+			
+			_obj.ApplyImpulse(_thrust, _obj.GetPosition());	
+
 		}
     }
 }

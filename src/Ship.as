@@ -1,10 +1,11 @@
 package  
 {
+	import flash.display.BitmapData;
 	import org.flixel.*;
 	
 	public class Ship extends FlxSprite
 	{
-		[Embed(source = "sprites/shipA.png")] private var Img:Class;	//Graphic of the player's ship		
+		[Embed(source = "sprites/shipB.png")] private var Img:Class;	//Graphic of the player's ship		
 		
 		public var Hook1_index:int;
 		public var Hook2_index:int;
@@ -18,6 +19,9 @@ package
 			
 			Hook1 = new Hook();
 			Hook2 = new Hook();
+			
+			//_pixels = new BitmapData(10, 10);
+			//drawLine(0, 0, 100, 100, 0xd8eba2, 10);
 			
 			super(FlxG.width / 2 - 8, FlxG.height / 2 - 8, Img);
 		}
@@ -47,6 +51,8 @@ package
 			if (FlxG.keys.D)
 				angularVelocity += 200;
 			
+			_	
+				
 			if (FlxG.mouse.justPressed())
 			{
 				Hook1.reset(x + (width - Hook1.width) / 2, y + (height - Hook1.height) / 2);
@@ -61,7 +67,7 @@ package
 				//Hook1.y = y;
 				//Hook1.angle = angle;
 				
-				Hook2.x = x -5;
+				Hook2.x = x;
 				Hook2.y = y;
 				Hook2.angle = angle;
 			}			
