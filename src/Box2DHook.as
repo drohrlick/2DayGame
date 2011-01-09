@@ -78,6 +78,7 @@ package
  
             _obj = _world.CreateBody(_bodyDef);
             _obj.CreateFixture(_fixDef);
+			_obj.SetUserData(GameplayState.Contact_hook_free);
         }
  
         override public function update():void
@@ -95,7 +96,11 @@ package
 				
 				_shotTimer -= FlxG.elapsed;
 				if (_shotTimer < 0)
+				{
+					//reset hook
 					AttactchedToShip = true;
+					_obj.SetUserData(GameplayState.Contact_hook_free);
+				}
 			}
 
             angle = _angle * (180 / Math.PI);            

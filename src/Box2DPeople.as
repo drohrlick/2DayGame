@@ -49,10 +49,16 @@ package
  
         override public function update():void
         {
-            x = (_obj.GetPosition().x * ratio) - width/2 ;
-            y = (_obj.GetPosition().y * ratio) - height/2;
-            angle = _obj.GetAngle() * (180 / Math.PI);
-            			
+			if (_obj.GetUserData() == GameplayState.Contact_person_stick)
+			{
+				//trace("do nothing");
+			}
+			else
+			{
+				x = (_obj.GetPosition().x * ratio) - width/2 ;
+				y = (_obj.GetPosition().y * ratio) - height/2;
+				angle = _obj.GetAngle() * (180 / Math.PI);
+            }			
 			super.update();
         }
  
@@ -79,6 +85,7 @@ package
             _obj.CreateFixture(_fixDef);
 			_obj.SetAngle(FlxU.random() * 360);
 			_obj.SetAngularVelocity(FlxU.random() * 8 - 4);
+			_obj.SetUserData(GameplayState.Contact_person_free);
 			
 			var randX:int;
 			var randY:int;

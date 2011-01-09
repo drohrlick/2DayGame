@@ -14,6 +14,14 @@ package
 		static public var RockMask:uint = 0x0008;
 		static public var WallMask:uint = 0x0010;
 		
+		static public var Contact_person_free:String = new String("Person_Free");
+		static public var Contact_person_stick:String = new String("Person_Sticking");
+		static public var Contact_person_combine:String = new String("Person_Combined");
+		static public var Contact_hook_free:String = new String("Hook_Free");
+		static public var Contact_hook_stick:String = new String("Hook_Sticking");
+		static public var Contact_player:String = new String("Player");
+		static public var Contact_boundary:String = new String("Boundary");		
+		
 		private var ratio:Number = 30;
 		
 		protected var _frameCounterTxt:FlxText;
@@ -125,6 +133,17 @@ package
 			//_ship.myUpdate();
 			
 			_world.Step(FlxG.elapsed, 10, 10);
+			//_world.ClearForces();
+			// scanning through all bodies
+			for (var worldbody:b2Body = _world.GetBodyList(); worldbody; worldbody = worldbody.GetNext()) {
+				// if a body is marked as "remove"...
+				if (worldbody.GetUserData()=="Stick") {
+					// ... just remove it!!
+					//_world.DestroyBody(worldbody);
+					worldbody.SetPositionAndAngle(_ship._hook1._obj.GetPosition(), _ship._hook1._obj.GetAngle());
+				}
+			}
+			
 			super.update();	
 									
 			//_frameCounter++;

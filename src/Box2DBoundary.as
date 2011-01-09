@@ -53,6 +53,7 @@ package
 			_bodyDef.type = _type;
 			_obj = _world.CreateBody(_bodyDef);
 			_obj.CreateFixture(_fixDef);
+			_obj.SetUserData(GameplayState.Contact_boundary);
 		}
 		
 		override public function update():void
