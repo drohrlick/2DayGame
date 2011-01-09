@@ -121,6 +121,14 @@ package
 				add(_array_people[i]);
 			}
 			
+			var grouping:Box2DGrouping = new Box2DGrouping(_world);
+			
+			for (i = 0; i < 15; i++)
+			{
+				grouping.addPerson(new Box2DPeople( i, FlxU.random() * Loveroids.resX, FlxU.random() * Loveroids.resY, 8, 8, _world));
+			}
+			add(grouping);
+			
 			_ship = new Box2DShip(0, Loveroids.resX / 2 - 16, Loveroids.resY / 2 - 16, 32, 32, _world);
 			_ship.loadGraphic(_ship.Img, false, false, 32, 32);
 			add(_ship._chain1);

@@ -12,9 +12,7 @@ package
 		[Embed(source = "sprites/links.png")] public var ImgLinks:Class;
 
         private var ratio:Number = 30;
- 
-        private var _world:b2World;
-		
+
 		public var _posOrigin:b2Vec2;
 		public var _posDestiny:b2Vec2;
 	
@@ -27,7 +25,6 @@ package
         public function Box2DChain(w:b2World):void
         {
             super();
-            _world = w
 			
 			createLinks();
 			SetInvisible( true );
