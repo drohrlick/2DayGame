@@ -114,10 +114,10 @@ package
 				
 				//non-sticky hooks
 				_shotTimer -= FlxG.elapsed;
-				if (_shotTimer < 0 || _obj.GetUserData() == GameLogic.Contact_hook_stick)
+				if (_shotTimer < 0)
 				{
 					if (_obj.GetUserData() == GameLogic.Contact_hook_stick)
-						FlxG.play(GameLogic.SndCombine);
+						FlxG.play(GameLogic.SndGrab);
 					
 					//reset hook when it runs out of time or hits something
 					AttachedToShip = true;
