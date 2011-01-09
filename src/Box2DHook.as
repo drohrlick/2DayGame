@@ -9,7 +9,8 @@ package
  
     public class Box2DHook extends FlxSprite
     {
-		[Embed(source = "sprites/hook.png")] public var Img:Class;	
+		[Embed(source = "sprites/hook.png")] public var ImgHook:Class;
+		//[Embed(source = "sprites/
 
         private var ratio:Number = 30;
  
@@ -39,6 +40,10 @@ package
 		private var _shotTimeLimit:Number = 1;
 
 		public var AttactchedToShip:Boolean = true;
+		
+		// chain variables
+		private var _maxNumLinks:uint = 50;
+		private var _arrayChain:Array;
  
         public function Box2DHook(X:Number, Y:Number, Width:Number, Height:Number, w:b2World):void
         {
