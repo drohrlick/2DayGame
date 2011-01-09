@@ -105,6 +105,12 @@ package
 			//update hook & chains
 			UpdateHooks();
 			UpdateChains();
+			
+			if (_obj.GetUserData() == GameplayState.Contact_player_collision)
+			{
+				_obj.SetUserData(GameplayState.Contact_player);
+				FlxG.play(GameplayState.SndShipCollision);
+			}
             
 			super.update();
         }
@@ -117,6 +123,9 @@ package
 			
 			if (FlxG.keys.W)
 			{
+				if (FlxG.keys.justPressed("W"))
+					FlxG.play(GameplayState.SndEngine); 
+					
 				_angle = _obj.GetAngle();
 				_pos = _obj.GetPosition();
 				_thrust.x = (Math.cos(_angle) * _maxThrust) - (Math.sin(_angle) * 0) + 0;
@@ -124,6 +133,9 @@ package
 			}
 			if (FlxG.keys.S)
 			{
+				if (FlxG.keys.justPressed("S"))
+					FlxG.play(GameplayState.SndEngine); 
+				
 				_angle = _obj.GetAngle();
 				_pos = _obj.GetPosition();
 				_thrust.x = (Math.cos(_angle) * -_maxThrust) - (Math.sin(_angle) * 0) + 0;
@@ -142,9 +154,17 @@ package
 
 			_rotation = 0;
 			if (FlxG.keys.A)
+			{
+				if (FlxG.keys.justPressed("A"))
+					FlxG.play(GameplayState.SndEngine); 
 				_rotation = -_maxRotVelocity;
+			}
 			if (FlxG.keys.D)
+			{
+				if (FlxG.keys.justPressed("D"))
+					FlxG.play(GameplayState.SndEngine); 
 				_rotation = _maxRotVelocity;
+			}
 			_obj.SetAngularVelocity(_rotation);
 			
             angle = _obj.GetAngle() * (180 / Math.PI);

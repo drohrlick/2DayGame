@@ -100,14 +100,14 @@ package
         {
 			if (_obj.GetUserData() == GameplayState.Contact_person_stick)
 			{
-				flicker(30);
+				flicker(20);
 				_obj.SetUserData(GameplayState.Contact_person_flash);
 				play( "lovely" );
 			}	
 			if (_obj.GetUserData() == GameplayState.Contact_person_flash && !flickering())
 			{
-				//reset person
-				_obj.SetUserData(GameplayState.Contact_person_free);
+				//ran out of time. die of old age
+				_obj.SetUserData(GameplayState.Contact_person_oldAge);
 				play( "normal" );
 			}
 			
@@ -121,12 +121,27 @@ package
 			y = (_obj.GetPosition().y * ratio) - height/2;
 			angle = _obj.GetAngle() * (180 / Math.PI);
 			
+			///////////////////////////////////////////////////////////
+			//If we want persons to remain still during hook
+			///////////////////////////////////////////////////////////
+			//if (_obj.GetUserData() == GameplayState.Contact_person_stick)
+			//{
+				//flicker(30);
+				//_obj.SetUserData(GameplayState.Contact_person_flash);
+				//play( "lovely" );
+			//}
+			//else
+			//{
+				//x = (_obj.GetPosition().x * ratio) - width/2 ;
+				//y = (_obj.GetPosition().y * ratio) - height/2;
+				//angle = _obj.GetAngle() * (180 / Math.PI);
+			//}
+			
 			super.update();
         }
 		
 		override public function kill():void
 		{
-			FlxG.play(GameplayState.SndHookup);
 			this.visible = false;
 			this.destroy();
 			super.kill();

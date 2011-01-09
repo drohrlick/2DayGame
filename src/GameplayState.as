@@ -13,6 +13,9 @@ package
 		[Embed(source = "sfx/laser_shot2.mp3")] static public var SndShoot:Class;		
 		[Embed(source = "sfx/laser_grab.mp3")] static public var SndCombine:Class;		
 		[Embed(source = "sfx/Hookup.mp3")] static public var SndHookup:Class;		
+		[Embed(source = "sfx/BrokenHeart.mp3")] static public var SndBrokenHeart:Class;		
+		[Embed(source = "sfx/EngineRev.mp3")] static public var SndEngine:Class;		
+		[Embed(source = "sfx/Collision.mp3")] static public var SndShipCollision:Class;		
 		
 		static public var ShipMask:uint = 0x0002;
 		static public var HookMask:uint = 0x0004;
@@ -24,9 +27,11 @@ package
 		static public var Contact_person_flash:String = new String("Person_Flashing");		//person flashing and ready to combine
 		static public var Contact_person_combine:String = new String("Person_Combined");	//person combined with another
 		static public var Contact_person_kill:String = new String("Person_Killed");			//remove person once combined.
+		static public var Contact_person_oldAge:String = new String("Person_OldAge");		//remove person when they remain single and end flicker
 		static public var Contact_hook_free:String = new String("Hook_Free");
 		static public var Contact_hook_stick:String = new String("Hook_Sticking");
 		static public var Contact_player:String = new String("Player");
+		static public var Contact_player_collision:String = new String("Player_Collision");		
 		static public var Contact_boundary:String = new String("Boundary");		
 		
 		private var _timer:Number = 60;
@@ -46,7 +51,8 @@ package
 		protected var _ship:Box2DShip;
 		
 		private var _numPeople:int = 10;
-		private var _numPeopleLoved:int = 0;
+		private var _numPeopleDied:int = 0;
+		private var _numPeopleDiedLonely:int = 0;
 		protected var _array_people:Array;
 		
 		protected var _line:Line;
@@ -144,23 +150,45 @@ package
 			{
 				if (worldbody.GetUserData() != null)
 				{
+					/////////////////////////////////////////////////
+					//If we want person to remain at hook position
+					/////////////////////////////////////////////////
+					//if (worldbody.GetUserData() == GameplayState.Contact_person_stick)
+					//{
+					//	worldbody.SetPosition(_ship._hook1._obj.GetPosition());
+					//}
+					
 					if (worldbody.GetUserData()== GameplayState.Contact_person_combine) 
 					{
 						// ... just remove it!!
 						_world.DestroyBody(worldbody);
 						worldbody.SetUserData(GameplayState.Contact_person_kill);
-						_numPeopleLoved++;
+						_numPeopleDied++;
+						FlxG.play(GameplayState.SndHookup);
 						
 						//make body fly back toward ship pos.
 						//_ship._personHolder1 = worldbody.GetPosition();
 						//var offset:b2Vec2 = _ship._obj.GetPosition() - worldbody.GetPosition();
 						//worldbody.SetPosition(_ship._obj.GetPosition());
 					}
+					if (worldbody.GetUserData() == GameplayState.Contact_person_oldAge)
+					{
+						_world.DestroyBody(worldbody);
+						worldbody.SetUserData(GameplayState.Contact_person_kill);
+						_numPeopleDied++;
+						_numPeopleDiedLonely++;
+						FlxG.play(GameplayState.SndBrokenHeart);
+					}
 				}
 			}
 			
-			if (_numPeopleLoved == _numPeople)
-				FlxG.state = new EndMenuState();
+			if (_numPeopleDied == _numPeople)
+			{
+				if(_numPeopleDiedLonely == 0)
+					FlxG.state = new HappyEndMenuState();
+				else
+					FlxG.state = new GameOverMenuState();				
+			}
 			
 			super.update();	
 									
