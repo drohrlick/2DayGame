@@ -21,6 +21,7 @@ package
 		static public var HookMask:uint = 0x0004;
 		static public var PersonMask:uint = 0x0008;
 		static public var WallMask:uint = 0x0010;
+		static public var RockMask:uint = 0x0012;
 		
 		static public var Contact_person_free:String = new String("Person_Free");			//person free roaming
 		static public var Contact_person_stick:String = new String("Person_Sticking");		//person just stuck by hook
@@ -33,6 +34,7 @@ package
 		static public var Contact_player:String = new String("Player");
 		static public var Contact_player_collision:String = new String("Player_Collision");		
 		static public var Contact_boundary:String = new String("Boundary");		
+		static public var Contact_asteroid:String = new String("Asteroid");
 		
 		private var _timer:Number = 60;
 		private var _timerText:FlxText;
@@ -50,10 +52,13 @@ package
 
 		protected var _ship:Box2DShip;
 		
-		private var _numPeople:int = 10;
 		private var _numPeopleDied:int = 0;
 		private var _numPeopleDiedLonely:int = 0;
+		private var _numPeople:int = 10;
 		protected var _array_people:Array;
+		
+		private var _numAsteroids:int = 10;
+		protected var _array_asteroids:Array;
 		
 		protected var _line:Line;
 		
@@ -111,26 +116,23 @@ package
 			var i:int;
 
 			SetupWorld();		
-			/*
-			_array_asteroids = new Array();
-			for (i = 0; i < _numAsteroids; i++)
-			{
-				_array_asteroids[i] = new Box2DAsteroid(FlxU.random()*Loveroids.resX, FlxU.random()*Loveroids.resY, 32, 32, _world);
-				_array_asteroids[i].createBody();
-				_array_asteroids[i].loadGraphic(_array_asteroids[i].Img, false, false, 32, 32);
-				add(_array_asteroids[i]);
-			}
-			*/
 			
 			_array_people = new Array()
 			for (i = 0; i < _numPeople; i++)
 			{
 				_array_people[i] = new Box2DPeople( i, FlxU.random() * Loveroids.resX, FlxU.random() * Loveroids.resY, 8, 8, _world);
+				_array_people[i].createBodyGameplay(i);
 				add(_array_people[i]);
 			}
 			
+			_array_asteroids = new Array()
+			for (i = 0; i < _numAsteroids; i++)
+			{
+				_array_asteroids[i] = new Box2DAsteroid( i, FlxU.random() * Loveroids.resX, FlxU.random() * Loveroids.resY, 32, 32, _world);
+				add(_array_asteroids[i]);
+			}
+			
 			_ship = new Box2DShip(0, Loveroids.resX / 2 - 16, Loveroids.resY / 2 - 16, 32, 32, _world);
-			_ship.loadGraphic(_ship.Img, false, false, 32, 32);
 			add(_ship._chain1);
 			//add(_ship._chain2);
 			add(_ship);
@@ -185,9 +187,9 @@ package
 			if (_numPeopleDied == _numPeople)
 			{
 				if(_numPeopleDiedLonely == 0)
-					FlxG.state = new HappyEndMenuState();
+					FlxG.fade.start(0xff000000, 1, HappyTransition);
 				else
-					FlxG.state = new GameOverMenuState();				
+					FlxG.fade.start(0xff000000, 1, SadTransition);
 			}
 			
 			super.update();	
@@ -201,8 +203,19 @@ package
  	
 			_timerText.text = "" + FlxU.floor(_timer);
 			
-			if(_timer <= 0)
-				FlxG.state = new GameOverMenuState();
+			if (_timer <= 0)
+				FlxG.fade.start(0xff000000, 1, SadTransition);
+
+		}
+		
+		private function HappyTransition():void
+		{
+			FlxG.state = new HappyEndMenuState();						
+		}
+		
+		private function SadTransition():void 
+		{
+			FlxG.state = new GameOverMenuState();			
 		}
 	}
 }

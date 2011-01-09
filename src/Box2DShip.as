@@ -57,6 +57,8 @@ package
 			
 			createBody(id);
 			
+			loadGraphic(Img, false, false, 32, 32);
+			
 			_hook1 = new Box2DHook(0, 0, 0, 8, 2, _world);
 			_hook1.loadGraphic(_hook1.ImgHook, false, false, 8, 2);
 			
@@ -109,8 +111,8 @@ package
 			if (_obj.GetUserData() == GameplayState.Contact_player_collision)
 			{
 				_obj.SetUserData(GameplayState.Contact_player);
-				FlxG.play(GameplayState.SndShipCollision);
-			}
+				//FlxG.play(GameplayState.SndShipCollision);
+			}			
             
 			super.update();
         }

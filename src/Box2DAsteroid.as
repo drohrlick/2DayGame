@@ -31,25 +31,20 @@ package
  
 		private var _maxVelocity:int = 2;
  
-        public function Box2DAsteroid(X:Number, Y:Number, Width:Number, Height:Number, w:b2World):void
+        public function Box2DAsteroid(id:int, X:Number, Y:Number, Width:Number, Height:Number, w:b2World):void
         {
             super(X,Y);
  			
             width = Width;
             height = Height;
             _world = w
+			
+			createBody(id);
+			
+			loadGraphic(Img, false, false, 32, 32);
 		}
  
-        override public function update():void
-        {
-            x = (_obj.GetPosition().x * ratio) - width/2 ;
-            y = (_obj.GetPosition().y * ratio) - height/2;
-            angle = _obj.GetAngle() * (180 / Math.PI);
-            			
-			super.update();
-        }
- 
-        public function createBody():void
+        public function createBody(id:int):void
         {            
             var boxShape:b2PolygonShape = new b2PolygonShape();
             boxShape.SetAsBox((width/2) / ratio, (height/2) /ratio);
@@ -60,8 +55,7 @@ package
             _fixDef.friction = _friction;                        
             _fixDef.shape = boxShape;
 			_fixDef.filter.categoryBits = GameplayState.RockMask;
-			_fixDef.filter.maskBits = GameplayState.HookMask | GameplayState.ShipMask;
-
+			_fixDef.filter.maskBits = GameplayState.HookMask | GameplayState.ShipMask | GameplayState.PersonMask | GameplayState.RockMask | GameplayState.WallMask;
  
             _bodyDef = new b2BodyDef();
             _bodyDef.position.Set((x + (width/2)) / ratio, (y + (height/2)) / ratio);
@@ -72,7 +66,7 @@ package
             _obj.CreateFixture(_fixDef);
 			_obj.SetAngle(FlxU.random() * 360);
 			_obj.SetAngularVelocity(FlxU.random() * 8 - 4);
-			
+			_obj.SetUserData(GameplayState.Contact_asteroid);			
 			var randX:int;
 			var randY:int;
 			
@@ -87,6 +81,15 @@ package
 				randY = FlxU.random() * -_maxVelocity;
 				
 			_obj.SetLinearVelocity(new b2Vec2(randX, randY));
+        }
+		
+		override public function update():void
+        {
+            x = (_obj.GetPosition().x * ratio) - width/2 ;
+            y = (_obj.GetPosition().y * ratio) - height/2;
+            angle = _obj.GetAngle() * (180 / Math.PI);
+            			
+			super.update();
         }
     }
 }

@@ -56,9 +56,9 @@ package
 			_array_people = new Array()
 			for (i = 0; i < _numPeople; i++)
 			{
-				_array_people[i] = new Box2DPeople( i,
-													FlxU.random() * Loveroids.resX, 
+				_array_people[i] = new Box2DPeople( i,FlxU.random() * Loveroids.resX, 
 													(FlxU.random() * Loveroids.resY) - Loveroids.resY, 8, 8, _world);
+				_array_people[i].createBodyGameplay(i);
 				add(_array_people[i]);
 				_array_people[i].play("lovely");
 			}
@@ -86,9 +86,14 @@ package
 			//Switch to play state if the mouse is pressed
 			if (FlxG.mouse.justPressed())
 			{
+				FlxG.fade.start(0xff000000, 1, SceneTransition);
 				FlxG.play(SndMenuIn);
-				FlxG.state = new GameplayState();
 			}
+		}
+		
+		private function SceneTransition():void
+		{
+			FlxG.state = new TutorialMenuState();
 		}
 	}
 }
