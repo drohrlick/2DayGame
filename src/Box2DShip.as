@@ -158,7 +158,7 @@ package
 			}
 			
 			if (FlxG.mouse.justPressed())
-				_hook1.Shoot();
+				_hook1.Shoot(x + 16, y + 16);
 		}
     }
 }

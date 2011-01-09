@@ -108,15 +108,20 @@ package
 			_angle = angle;
 		}
  
-		public function Shoot():void
+		public function Shoot(x:int, y:int):void
 		{
 			if (AttactchedToShip)
-			{
+			{					
 				_obj.SetPosition(new b2Vec2(_posX, _posY));
-				
+								
 				_thrust.SetZero();
 				_obj.SetLinearVelocity(_thrust);	//reset thrust
-							
+
+				_angle = FlxU.getAngle(FlxG.mouse.x - x, 
+									   FlxG.mouse.y - y);
+				
+				_angle  = (_angle / 180) * Math.PI;   //convert to radian
+				
 				_thrust.x = (Math.cos(_angle) * _maxHookThurst) - (Math.sin(_angle) * 0) + 0;
 				_thrust.y = (Math.sin(_angle) * _maxHookThurst) - (Math.cos(_angle) * 0) + 0;		
 												
