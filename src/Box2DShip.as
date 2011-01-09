@@ -133,11 +133,13 @@ package
 			{	
 				var _pos:b2Vec2 = _obj.GetPosition();
 				_angle = _obj.GetAngle();
-				_hook1.UpdateHook(_pos, _angle);
+				_hook1.UpdateAttachedHook(_pos, _angle);
 			}
 			
 			if (FlxG.mouse.justPressed())
+			{
 				_hook1.Shoot();
+			}
 		}
     }
 }

@@ -32,8 +32,10 @@ package
         //Default body type
         public var _type:uint = b2Body.b2_dynamicBody;
 		
+		//Other variables
 		private var _thrust:b2Vec2; 
 		private var _maxVelocity:int = 2;
+		private var _shootStartTime:Number;
 		
 		public var AttactchedToShip:Boolean = true;
  
@@ -88,7 +90,7 @@ package
 			super.update();
         }
 		
-		public function UpdateHook(pos:b2Vec2, angle:Number):void
+		public function UpdateAttachedHook(pos:b2Vec2, angle:Number):void
 		{
 			_posX = pos.x;
 			_posY = pos.y;
@@ -102,14 +104,13 @@ package
 			_thrust.x = 0; _thrust.y = 0;
 			_obj.ApplyImpulse(_thrust, _obj.GetPosition());
 			
-			_angle = _obj.GetAngle();
 			_thrust.x = (Math.cos(_angle) * 0.05) - (Math.sin(_angle) * 0) + 0;
 			_thrust.y = (Math.sin(_angle) * 0.05) - (Math.cos(_angle) * 0) + 0;		
-						
+									
 			AttactchedToShip = false;
 			
 			_obj.ApplyImpulse(_thrust, _obj.GetPosition());	
-
+			
 		}
     }
 }
