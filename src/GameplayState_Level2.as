@@ -96,6 +96,15 @@ package
 				add(_array_asteroids[i]);
 			}
 			
+			var grouping:Box2DGrouping = new Box2DGrouping(_world);
+			for (i = 0; i < 15; i++)
+			{
+				var person:Box2DPeople = new Box2DPeople( _numPeople + i, FlxU.random() * Loveroids.resX, FlxU.random() * Loveroids.resY, 8, 8, _world)
+				person.createBodyGameplay(_numPeople + i);
+				grouping.addPerson(person);
+			}
+			add(grouping);
+
 			_ship = new Box2DShip(0, Loveroids.resX / 2 - 16, Loveroids.resY / 2 - 16, 32, 32, _world);
 			add(_ship._chain1);
 			//add(_ship._chain2);

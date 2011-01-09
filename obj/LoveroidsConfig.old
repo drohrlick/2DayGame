@@ -17,12 +17,12 @@
       <value>'1/9/2011'</value>
     </define>
     <source-path append="true">
-      <path-element>C:\Users\Danny\Desktop\Loveroids\2DayGame\src</path-element>
+      <path-element>E:\LoveRoids\2DayGame3\src</path-element>
       <path-element>C:\Program Files (x86)\FlashDevelop\Library\AS3\classes</path-element>
     </source-path>
   </compiler>
   <file-specs>
-    <path-element>C:\Users\Danny\Desktop\Loveroids\2DayGame\src\Loveroids.as</path-element>
+    <path-element>E:\LoveRoids\2DayGame3\src\Loveroids.as</path-element>
   </file-specs>
   <default-background-color>#FFFFFF</default-background-color>
   <default-frame-rate>30</default-frame-rate>

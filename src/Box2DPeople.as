@@ -29,8 +29,10 @@ package
         public var _angle:Number = 0;
         //Default body type
         public var _type:uint = b2Body.b2_dynamicBody;
- 
+		public var _sex:Boolean;
+		
 		private var _maxVelocity:int = 2;
+		
 		
         public function Box2DPeople(id:int, X:Number, Y:Number, Width:Number, Height:Number, w:b2World):void
         {
@@ -46,12 +48,12 @@ package
 			if (FlxU.random() < 0.5 )
 			{
 				loadGraphic(ImgM, false, false, 16, 16 );
-				this.color = 0x0099FF;
+				_sex = true;
 			}
 			else
 			{
 				loadGraphic(ImgW, false, false, 16, 16 );
-				this.color = 0xFFCCFF;
+				_sex = false;
 			}
 				
 			addAnimation( "normal", [0], 0 );
