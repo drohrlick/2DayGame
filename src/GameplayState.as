@@ -51,7 +51,7 @@ package
 		
 		protected var _line:Line;
 		
-		private var _backgroundColor:Number = 0xDDDDDDDD;
+		private var _backgroundColor:Number = 0x99FFDDEE;
 		
 		override public function create():void
 		{	
@@ -94,8 +94,10 @@ package
 			
 			_frameCounter = new int(0);
 			
-			_timerText = new FlxText(20, 20, 100, String(_timer));
-			add(_timerText); //adds a 100px wide text field at position 0,0 (upper left)
+			_timerText = new FlxText(Loveroids.resX / 2 - 25, 20,50, String(_timer));
+			_timerText.size = 20;
+			_timerText.alignment = "center";
+			add(_timerText);
 		}
 		
 		private function CreateGameObjects():void
