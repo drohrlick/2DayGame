@@ -36,6 +36,8 @@ package
 		private var _deathFrames:int = 0;
 		private var _deathFrameLimit:int = 30;
 		
+		public var _group:Box2DGrouping = null;
+		
         public function Box2DPeople(id:int, X:Number, Y:Number, Width:Number, Height:Number, w:b2World):void
         {
             super(X,Y);
@@ -84,6 +86,7 @@ package
 			_obj.SetAngle(FlxU.random() * 360);
 			_obj.SetAngularVelocity(FlxU.random() * 8 - 4);
 			_obj.SetUserData( new ObjectUserData(GameLogic.Type_People, GameLogic.State_People_Free) );
+			(_obj.GetUserData() as ObjectUserData).event_data1 = id;
 			
 			var randX:int;
 			var randY:int;
@@ -133,7 +136,7 @@ package
 			_obj.SetAngularVelocity(0);
 			//_obj.SetUserData(GameLogic.Contact_person_free);
 			_obj.SetUserData( new ObjectUserData(GameLogic.Type_People, GameLogic.State_People_Free));
-				
+			(_obj.GetUserData() as ObjectUserData).event_data1 = id;
 			_obj.SetLinearVelocity(new b2Vec2(0, 0));
         }
 		
@@ -179,7 +182,7 @@ package
 			}
 			else if ( data.state == GameLogic.State_People_Combine)
 			{
-				 data.state = GameLogic.State_People_Love;
+				data.state = GameLogic.State_People_Love;
 				play("love");
 			}
 			else if ( data.state == GameLogic.State_People_Love)

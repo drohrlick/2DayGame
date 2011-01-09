@@ -30,15 +30,18 @@ package
         public var _angle:Number = 0;
         //Default body type
         public var _type:uint = b2Body.b2_dynamicBody;
-
+		
 		public var _segmentLengthPerPerson:Number = 10;	// arms length in pixels
 		public var _densityPerPerson:Number = 0.7;
 		public var _peopleAdded:Boolean = false;
 		
-        public function Box2DGrouping(w:b2World):void
+		public var _id:Number = -1;
+		
+        public function Box2DGrouping( id:Number, w:b2World):void
         {
             super();
             _world = w
+			_id = id;
 			
 			members = new Array();
 			createBody();
@@ -126,7 +129,6 @@ package
 		
 		public function addPerson( person:Box2DPeople ):void
 		{
-			trace( members.length);
 			// if first set angle and position to the added person
 			if ( members.length <= 0 )
 			{
@@ -139,6 +141,19 @@ package
 			_peopleAdded = true;
 		}
 		
+		public function addPeople( bGroup:Box2DGrouping ):void
+		{
+			while ( bGroup.Length() > 0 )
+			{
+				this.addPerson(bGroup.removePerson());
+			}
+			
+		}
+		
+		public function Length():Number 
+		{
+			return this.members.length;
+		}
 		
 		private function recalcFixtureDef():void 
 		{

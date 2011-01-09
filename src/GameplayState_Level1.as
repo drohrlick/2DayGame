@@ -29,7 +29,7 @@ package
 		private var _numPeopleGoal:int = 25;		//the number of loved people it takes to beat the level. 
 
 		protected var _array_people:Array;
-		
+		protected var _array_groups:Array;
 		
 		private var _backgroundColor:Number = 0x99FFDDEE;
 		
@@ -80,7 +80,8 @@ package
 
 			SetupWorld();		
 			
-			_array_people = new Array()
+			_array_groups = new Array();
+			_array_people = new Array();
 			for (i = 0; i < _numPeople; i++)
 			{
 				_array_people[i] = new Box2DPeople( i, FlxU.random() * Loveroids.resX, FlxU.random() * Loveroids.resY, 8, 8, _world);
@@ -138,6 +139,44 @@ package
 						data.state = GameLogic.State_People_Kill;
 						_numPeopleDiedLonely++;
 						FlxG.play(GameLogic.SndBrokenHeart);
+					}
+					
+					if (data.state == GameLogic.State_People_Love )
+					{
+						// check if either people have groups
+						var aGroup:Boolean = false;
+						var aPerson:Box2DPeople = (_array_people[data.event_data1] as Box2DPeople);
+						if (aPerson._group != null)
+							aGroup = true;
+							
+						var bGroup:Boolean = false;
+						var bPerson:Box2DPeople = (_array_people[data.event_data2] as Box2DPeople);
+						if (bPerson._group != null)
+							bGroup = true;
+							
+						if ( aGroup  && !bGroup ) {
+							aPerson._group.addPerson(bPerson);
+						}
+						else if (!aGroup && bGroup) {
+							bPerson._group.addPerson(aPerson);
+						}
+						else if (aGroup && bGroup) {
+							if ( aPerson._group._id != bPerson._group._id ) {
+								aPerson._group.addPeople( bPerson._group );
+							}
+						}
+						else // !aGroup && !bGroup
+						{
+							aPerson._group = new Box2DGrouping(_array_groups.length, _world);
+							aPerson._group.addPerson(aPerson);
+							aPerson._group.addPerson(bPerson);
+							_array_groups.push(aPerson._group);
+							add(aPerson._group);
+						}
+						
+						data.state = GameLogic.State_People_Grouped;
+						_numPeopleDiedHappy++;
+						_numPeopleDiedHappy++;
 					}
 				}
 			}

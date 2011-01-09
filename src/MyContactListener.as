@@ -119,6 +119,8 @@ package {
 			else if (dataA.state == GameLogic.State_People_Flash && dataB.state == GameLogic.State_People_Flash)
 			{
 				dataB.state = dataA.state = GameLogic.State_People_Combine;
+				dataA.event_data2 = dataB.event_data1;
+				dataB.event_data2 = dataA.event_data1;
 			}
 			/*
 			if (fixtureA.GetBody().GetUserData() == GameLogic.Contact_player)

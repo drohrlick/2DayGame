@@ -114,8 +114,6 @@ package
 				x = (_obj.GetPosition().x * ratio) - width/2 ;
 				y = (_obj.GetPosition().y * ratio) - height / 2;
 				
-				trace("shot x: " + x);
-				
 				//non-sticky hooks
 				_shotTimer -= FlxG.elapsed;
 				if (_shotTimer < 0)
