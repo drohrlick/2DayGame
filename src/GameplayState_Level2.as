@@ -33,8 +33,6 @@ package
 		private var _numAsteroids:int = 10;
 		protected var _array_asteroids:Array;
 		
-		protected var _line:Line;
-		
 		private var _backgroundColor:Number = 0x99FFDDEE;
 		
 		override public function create():void
@@ -129,6 +127,8 @@ package
 			{
 				if (worldbody.GetUserData() != null)
 				{
+					var data:ObjectUserData = worldbody.GetUserData() as ObjectUserData;
+					
 					/////////////////////////////////////////////////
 					//If we want person to remain at hook position
 					/////////////////////////////////////////////////
@@ -136,13 +136,13 @@ package
 					//{
 					//	worldbody.SetPosition(_ship._hook1._obj.GetPosition());
 					//}
-					
-					if (worldbody.GetUserData()== GameLogic.Contact_person_loveDeath) 
+
+					if( data.state == GameLogic.State_People_DieLove )
 					{
 						// ... just remove it!!
 						_world.DestroyBody(worldbody);
-						worldbody.SetUserData(GameLogic.Contact_person_kill);
-						_numPeopleDiedHappy++;
+						//worldbody.SetUserData(GameLogic.Contact_person_kill);
+						data.state = GameLogic.State_People_Kill;
 						FlxG.play(GameLogic.SndHookup);
 						
 						//make body fly back toward ship pos.
@@ -150,10 +150,10 @@ package
 						//var offset:b2Vec2 = _ship._obj.GetPosition() - worldbody.GetPosition();
 						//worldbody.SetPosition(_ship._obj.GetPosition());
 					}
-					if (worldbody.GetUserData() == GameLogic.Contact_person_lonelyDeath)
+					if( data.state == GameLogic.State_People_DieLonely )
 					{
 						_world.DestroyBody(worldbody);
-						worldbody.SetUserData(GameLogic.Contact_person_kill);
+						data.state = GameLogic.State_People_Kill;
 						_numPeopleDiedLonely++;
 						FlxG.play(GameLogic.SndBrokenHeart);
 					}
@@ -162,6 +162,8 @@ package
 			
 			if (_numPeopleDiedHappy >= _numPeopleGoal)
 				FlxG.fade.start(0xff000000, 1, HappyTransition);
+			else if ((_numPeopleDiedHappy + _numPeopleDiedLonely) == _numPeople)
+				FlxG.fade.start(0xff000000, 1, SadTransition);
 			
 			super.update();	
 		}

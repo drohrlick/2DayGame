@@ -89,7 +89,8 @@ package
  
             _obj = _world.CreateBody(_bodyDef);
             _obj.CreateFixture(_fixDef);	
-			_obj.SetUserData(GameLogic.Contact_player);
+			//_obj.SetUserData(GameLogic.Contact_player);
+			_obj.SetUserData( new ObjectUserData(GameLogic.Type_Ship));
         }
 		
         override public function update():void
@@ -107,12 +108,13 @@ package
 			//update hook & chains
 			UpdateHooks();
 			UpdateChains();
-			
-			if (_obj.GetUserData() == GameLogic.Contact_player_collision)
+						
+			var data:ObjectUserData = _obj.GetUserData() as ObjectUserData;
+			if ( data.event == GameLogic.Event_Ship_Collision )
 			{
-				_obj.SetUserData(GameLogic.Contact_player);
-				//FlxG.play(GameplayState.SndShipCollision);
-			}			
+				
+				data.event = GameLogic.Event_None;
+			}
             
 			super.update();
         }

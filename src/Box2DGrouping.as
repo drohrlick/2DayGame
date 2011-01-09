@@ -118,6 +118,7 @@ package
  
             _obj = _world.CreateBody(_bodyDef);
 			_obj.SetActive(false);
+			_obj.SetUserData( new ObjectUserData(GameLogic.Type_Grouping) );
 			
 			 //_obj.CreateFixture(_fixDef);
 			 trace( true );

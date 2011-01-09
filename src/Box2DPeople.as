@@ -83,7 +83,7 @@ package
             _obj.CreateFixture(_fixDef);
 			_obj.SetAngle(FlxU.random() * 360);
 			_obj.SetAngularVelocity(FlxU.random() * 8 - 4);
-			_obj.SetUserData(GameLogic.Contact_person_free);
+			_obj.SetUserData( new ObjectUserData(GameLogic.Type_People, GameLogic.State_People_Free) );
 			
 			var randX:int;
 			var randY:int;
@@ -104,15 +104,9 @@ package
 		public function createBodyTutorial(id:int):void
         {            
 			if (FlxU.random() < 0.5 )
-			{
 				loadGraphic(ImgM, false, false, 16, 16 );
-				//this.color = 0x0099FF;
-			}
 			else
-			{
 				loadGraphic(ImgW, false, false, 16, 16 );
-				//this.color = 0xFFCCFF;
-			}
 				
 			addAnimation( "normal", [0], 0 );
 			addAnimation( "lovely", [0, 1, 2, 3, 4], 5);
@@ -137,17 +131,20 @@ package
             _obj.CreateFixture(_fixDef);
 			_obj.SetAngle(0);
 			_obj.SetAngularVelocity(0);
-			_obj.SetUserData(GameLogic.Contact_person_free);
+			//_obj.SetUserData(GameLogic.Contact_person_free);
+			_obj.SetUserData( new ObjectUserData(GameLogic.Type_People, GameLogic.State_People_Free));
 				
 			_obj.SetLinearVelocity(new b2Vec2(0, 0));
         }
 		
 		public function updateTutorial():void
 		{
-			if (_obj.GetUserData() == GameLogic.Contact_person_stick)
+			//if (_obj.GetUserData() == GameLogic.Contact_person_stick)
+			if( (_obj.GetUserData() as ObjectUserData).state == GameLogic.State_People_Stick)
 			{
 				flicker(30);
-				_obj.SetUserData(GameLogic.Contact_person_flash);
+				//_obj.SetUserData(GameLogic.Contact_person_flash);
+				(_obj.GetUserData() as ObjectUserData).state = GameLogic.State_People_Stick;
 				play( "lovely" );
 			}	
 			
@@ -156,45 +153,47 @@ package
 		
 		override public function update():void
         {
-			if (_obj.GetUserData() == GameLogic.Contact_person_stick)
+			var data:ObjectUserData = (_obj.GetUserData() as ObjectUserData);
+			
+			if(  data.state == GameLogic.State_People_Stick )
 			{
 				flicker(_flashLimit);
-				_obj.SetUserData(GameLogic.Contact_person_flash);
+				 data.state = GameLogic.Contact_person_flash;
 				play( "lovely" );
 			}	
-			else if (_obj.GetUserData() == GameLogic.Contact_person_flash && !flickering())	
+			else if ( data.state == GameLogic.State_People_Flash && !flickering())	
 			{
-				_obj.SetUserData(GameLogic.Contact_person_smoke);
+				 data.state = GameLogic.State_People_Smoke;
 				play("smoke");
 			}			
-			else if (_obj.GetUserData() == GameLogic.Contact_person_smoke)
+			else if ( data.state == GameLogic.State_People_Smoke)
 			{
 				_deathFrames++;
 				if (_deathFrames >= _deathFrameLimit)
 				{	
 					//person dies of old age
-					_obj.SetUserData(GameLogic.Contact_person_lonelyDeath);
+					 data.state = GameLogic.State_People_DieLonely;
 					play( "smoke" );
 					_deathFrames = 0;
 				}
 			}
-			else if (_obj.GetUserData() == GameLogic.Contact_person_combine)
+			else if ( data.state == GameLogic.State_People_Combine)
 			{
-				_obj.SetUserData(GameLogic.Contact_person_love);
+				 data.state = GameLogic.State_People_Love;
 				play("love");
 			}
-			else if (_obj.GetUserData() == GameLogic.Contact_person_love)
+			else if ( data.state == GameLogic.State_People_Love)
 			{
 				_deathFrames++;
 				if (_deathFrames >= _deathFrameLimit)
 				{
 					play( "love" );
 					//person dies happy
-					_obj.SetUserData(GameLogic.Contact_person_loveDeath);
+					 data.state = GameLogic.State_People_DieLove;
 					_deathFrames = 0;
 				}
 			}
-			else if (_obj.GetUserData() == GameLogic.Contact_person_kill)
+			else if( data.state == GameLogic.State_People_Kill )
 			{
 				kill();
 				play( "love" );

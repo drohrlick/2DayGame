@@ -30,7 +30,7 @@ package {
 		
 		override public function PreSolve(contact:b2Contact, oldManifold:b2Manifold):void 
 		{
-			// getting the fixtures that collided
+			/*// getting the fixtures that collided
 			var fixtureA:b2Fixture=contact.GetFixtureA();
 			var fixtureB:b2Fixture=contact.GetFixtureB();
 			// variable to handle bodies y position
@@ -83,7 +83,49 @@ package {
 			if (fixtureA.GetBody().GetUserData() == GameLogic.Contact_player)
 				fixtureA.GetBody().SetUserData(GameLogic.Contact_player_collision);
 			if (fixtureB.GetBody().GetUserData() == GameLogic.Contact_player)
-				fixtureB.GetBody().SetUserData(GameLogic.Contact_player_collision);
+				fixtureB.GetBody().SetUserData(GameLogic.Contact_player_collision);*/
+				
+			/*if ( contact.GetFixtureA().GetUserData() == null )
+				trace("a");
+			else if( contact.GetFixtureB().GetUserData() == null ) 
+				trace("b");*/
+				
+			
+			// getting the fixtures that collided
+			var dataA:ObjectUserData = contact.GetFixtureA().GetBody().GetUserData() as ObjectUserData;
+			var dataB:ObjectUserData = contact.GetFixtureB().GetBody().GetUserData() as ObjectUserData;
+			
+			if ( dataA == null || dataB == null ) return;
+			
+			
+			if ((dataA.state == GameLogic.State_People_Free && dataB.state == GameLogic.State_Hook_Free ) ||
+				(dataA.state == GameLogic.State_Hook_Free && dataB.state == GameLogic.State_People_Free))
+			{
+				//Handle hook and person hit.
+				switch(dataA.state)
+				{
+					case GameLogic.State_People_Free:		
+						dataA.state = GameLogic.State_People_Stick;
+						dataB.state = GameLogic.State_Hook_Stick;
+						break;
+						
+					case GameLogic.State_Hook_Free:				
+						dataA.state = GameLogic.State_Hook_Stick;
+						dataB.state = GameLogic.State_People_Stick;
+						break;
+				}
+			}
+			
+			else if (dataA.state == GameLogic.State_People_Flash && dataB.state == GameLogic.State_People_Flash)
+			{
+				dataB.state = dataA.state = GameLogic.State_People_Combine;
+			}
+			/*
+			if (fixtureA.GetBody().GetUserData() == GameLogic.Contact_player)
+				fixtureA.GetBody().SetUserData(GameLogic.Contact_player_collision);
+				
+			if (fixtureB.GetBody().GetUserData() == GameLogic.Contact_player)
+				fixtureB.GetBody().SetUserData(GameLogic.Contact_player_collision);*/
 
 		}
 	}

@@ -56,7 +56,8 @@ package
 			
 			_obj = _world.CreateBody(_bodyDef);
 			_obj.CreateFixture(_fixDef);
-			_obj.SetUserData(GameLogic.Contact_boundary);
+			//_obj.SetUserData(GameLogic.Contact_boundary);
+			_obj.SetUserData( new ObjectUserData(GameLogic.Type_Boundary) );
 		}
 		
 		override public function update():void

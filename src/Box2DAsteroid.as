@@ -66,7 +66,8 @@ package
             _obj.CreateFixture(_fixDef);
 			_obj.SetAngle(FlxU.random() * 360);
 			_obj.SetAngularVelocity(FlxU.random() * 8 - 4);
-			_obj.SetUserData(GameLogic.Contact_asteroid);			
+			//_obj.SetUserData(GameLogic.Contact_asteroid);			
+			_obj.SetUserData( new ObjectUserData(GameLogic.Type_Asteroid));
 			var randX:int;
 			var randY:int;
 			
